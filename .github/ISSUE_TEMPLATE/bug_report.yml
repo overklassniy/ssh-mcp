@@ -1,0 +1,142 @@
+name: Bug report
+description: Report something that is broken or behaves incorrectly in ssh-mcp.
+title: "[bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report for ssh-mcp.
+
+        Before you continue, please search the existing issues to avoid
+        duplicates. If you are asking a question about configuration or
+        authentication rather than reporting a defect, use the
+        "Config / auth question" template instead.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A short description of the bug.
+      placeholder: One or two sentences describing what is wrong.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: MCP client
+      description: Which MCP client did the bug happen with?
+      options:
+        - Claude Desktop
+        - Claude Code
+        - Cursor
+        - Devin
+        - VS Code
+        - Cline
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Operating system
+      description: The OS the ssh-mcp process ran on.
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: ssh-mcp version
+      description: Output of `ssh-mcp --version`, or the image tag if running Docker.
+      placeholder: "1.0.0 or ghcr.io/overklassniy/ssh-mcp:latest"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install method
+      options:
+        - Local binary (make build)
+        - Prebuilt binary from Releases
+        - Docker (ghcr.io / Docker Hub)
+        - MCPB one-click bundle
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: |
+        The relevant `ssh-mcp.toml` section or CLI flags. Redact secrets.
+        Never paste passwords, passphrases, private keys, or 2FA codes.
+      render: toml
+      placeholder: |
+        [[server]]
+        name = "web"
+        host = "example.com"
+        username = "deploy"
+        port = 22
+        private_key = "~/.ssh/id_ed25519"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: The smallest set of steps that triggers the bug.
+      placeholder: |
+        1. Start ssh-mcp with config X
+        2. Ask the agent to call tool Y with args Z
+        3. Observe the error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead, including any error text.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        Relevant log output. To get verbose logs, run ssh-mcp with
+        `SSH_MCP_DEBUG=1`. This field is rendered as shell, so no
+        backticks are needed. Redact any secrets first.
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checks
+      options:
+        - label: I have searched the existing issues for duplicates.
+          required: true
+        - label: I have redacted all secrets (passwords, passphrases, keys, 2FA codes).
+          required: true

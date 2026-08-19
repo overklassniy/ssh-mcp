@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">ssh-mcp: secure, scoped SSH access for AI assistants</title>
+  <desc id="heroDesc">Project hero for ssh-mcp, an MCP server that gives AI clients a small, auditable set of SSH tools. Monochrome technical layout with a terminal prompt motif and a thin connection line from an agent node to a remote node.</desc>
+
+  <!-- Canvas: own dark background so the hero reads on both GitHub light and dark. -->
+  <rect x="0" y="0" width="1200" height="360" fill="#0D1117"/>
+
+  <!-- Thin frame rule, one stroke weight. -->
+  <rect x="24" y="24" width="1152" height="312" rx="8" ry="8" fill="none" stroke="#30363D" stroke-width="1"/>
+
+  <!-- Grid motif: faint vertical rules at the 24-unit grid, subordinate to content. -->
+  <g stroke="#21262D" stroke-width="1">
+    <line x1="600" y1="40" x2="600" y2="320"/>
+  </g>
+
+  <!-- Left column: identity. -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" text-rendering="geometricPrecision">
+
+    <!-- Eyebrow: mono metadata. -->
+    <text x="64" y="92" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="18" fill="#8B949E" letter-spacing="2">
+      MCP SERVER / SSH
+    </text>
+
+    <!-- Title. -->
+    <text x="64" y="168" font-size="64" font-weight="700" fill="#E6EDF3" letter-spacing="-1">
+      ssh-mcp
+    </text>
+
+    <!-- One-line value. -->
+    <text x="64" y="212" font-size="24" fill="#C9D1D9">
+      Secure, scoped SSH access for AI assistants.
+    </text>
+
+    <!-- Mono metadata row, separated by a thin rule. -->
+    <line x1="64" y1="244" x2="560" y2="244" stroke="#30363D" stroke-width="1"/>
+    <text x="64" y="276" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#8B949E" letter-spacing="1">
+      Go 1.26  |  stdio  |  8 tools  |  MIT
+    </text>
+  </g>
+
+  <!-- Right column: project-native motif. -->
+  <g font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" text-rendering="geometricPrecision">
+
+    <!-- Terminal prompt block. -->
+    <rect x="648" y="92" width="480" height="92" rx="6" ry="6" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+    <text x="668" y="124" font-size="18" fill="#8B949E">
+      ssh-mcp $ <tspan fill="#E6EDF3">execute-command</tspan>
+    </text>
+    <text x="668" y="156" font-size="16" fill="#8B949E">
+      &gt; Run df -h on the web server
+    </text>
+
+    <!-- Cursor block at end of prompt line. -->
+    <rect x="944" y="108" width="10" height="18" fill="#E6EDF3"/>
+
+    <!-- Connection line: agent -> remote, the scoped bridge. -->
+    <line x1="688" y1="244" x2="1088" y2="244" stroke="#484F58" stroke-width="1"/>
+    <circle cx="688" cy="244" r="5" fill="#E6EDF3"/>
+    <circle cx="1088" cy="244" r="5" fill="none" stroke="#E6EDF3" stroke-width="1"/>
+
+    <text x="664" y="276" font-size="14" fill="#8B949E" text-anchor="start">
+      agent
+    </text>
+    <text x="1092" y="276" font-size="14" fill="#8B949E" text-anchor="end">
+      remote
+    </text>
+
+    <!-- Policy gate mark on the connection line. -->
+    <rect x="864" y="236" width="48" height="16" rx="3" ry="3" fill="#0D1117" stroke="#484F58" stroke-width="1"/>
+    <text x="888" y="248" font-size="11" fill="#8B949E" text-anchor="middle">
+      policy
+    </text>
+  </g>
+</svg>

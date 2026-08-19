@@ -1,0 +1,134 @@
+{
+  "manifest_version": "0.3",
+  "name": "ssh-mcp",
+  "display_name": "SSH MCP",
+  "version": "1.0.0",
+  "description": "SSH MCP server: execute commands, transfer files, and forward ports on remote servers via MCP.",
+  "long_description": "ssh-mcp is a Model Context Protocol server that gives AI assistants secure, scoped access to remote machines over SSH. It exposes tools for command execution, SFTP file upload/download and directory sync, remote listing, server status collection, and SSH port forwarding. Servers are configured per connection with allow-lists for commands and local/remote paths, plus optional proxy and keyboard-interactive (2FA) support.",
+  "author": {
+    "name": "overklassniy",
+    "url": "https://github.com/overklassniy/ssh-mcp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/overklassniy/ssh-mcp.git"
+  },
+  "homepage": "https://github.com/overklassniy/ssh-mcp",
+  "documentation": "https://github.com/overklassniy/ssh-mcp#readme",
+  "support": "https://github.com/overklassniy/ssh-mcp/issues",
+  "license": "MIT",
+  "keywords": ["ssh", "sftp", "remote", "devops", "automation", "mcp"],
+  "server": {
+    "type": "binary",
+    "entry_point": "server/ssh-mcp",
+    "mcp_config": {
+      "command": "${__dirname}/server/ssh-mcp",
+      "args": [
+        "--host", "${user_config.host}",
+        "--port", "${user_config.port}",
+        "--user", "${user_config.username}",
+        "--transport", "exec",
+        "--private-key", "${user_config.private_key}",
+        "--agent", "${user_config.agent}",
+        "--try-keyboard=${user_config.try_keyboard}"
+      ],
+      "env": {
+        "SSH_MCP_PASSWORD": "${user_config.password}",
+        "SSH_MCP_PASSPHRASE": "${user_config.passphrase}"
+      },
+      "platform_overrides": {
+        "win32": {
+          "command": "${__dirname}/server/ssh-mcp.exe"
+        }
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "execute-command",
+      "description": "Execute a command on a remote server via SSH. Returns stdout, stderr, exit code, and duration."
+    },
+    {
+      "name": "upload",
+      "description": "Upload a local file to a remote server via SFTP. Validates local and remote paths against configured allowed paths."
+    },
+    {
+      "name": "download",
+      "description": "Download a remote file to the local machine via SFTP. Downloads to a temp file first, then atomically renames. Validates paths."
+    },
+    {
+      "name": "list-servers",
+      "description": "List all configured SSH servers with their connection status."
+    },
+    {
+      "name": "server-status",
+      "description": "Collect system status (hostname, OS, CPU, memory, disk, GPUs, processes, services) from a remote server via a single batched SSH command."
+    },
+    {
+      "name": "list-remote",
+      "description": "List the contents of a remote directory via SFTP. Returns structured file entries with name, size, mode, modTime, and isDir."
+    },
+    {
+      "name": "dir-sync",
+      "description": "Recursively sync a directory between local and remote via SFTP. Supports upload and download directions with concurrent file transfers."
+    },
+    {
+      "name": "port-forward",
+      "description": "Manage SSH port forwards (local or remote). Supports open, close, and list actions."
+    }
+  ],
+  "tools_generated": false,
+  "compatibility": {
+    "platforms": ["win32", "darwin", "linux"]
+  },
+  "user_config": {
+    "host": {
+      "type": "string",
+      "title": "SSH Host",
+      "description": "Hostname or IP address of the remote SSH server.",
+      "required": true
+    },
+    "port": {
+      "type": "number",
+      "title": "SSH Port",
+      "description": "SSH port (default 22).",
+      "default": 22,
+      "min": 1,
+      "max": 65535
+    },
+    "username": {
+      "type": "string",
+      "title": "SSH Username",
+      "description": "Username for the SSH connection.",
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "title": "Password",
+      "description": "SSH password. Stored securely and passed via the SSH_MCP_PASSWORD environment variable. Provide a password, a private key, or an agent.",
+      "sensitive": true
+    },
+    "private_key": {
+      "type": "file",
+      "title": "Private Key File",
+      "description": "Path to an SSH private key file. Provide a private key, a password, or an agent."
+    },
+    "passphrase": {
+      "type": "string",
+      "title": "Private Key Passphrase",
+      "description": "Passphrase for the private key, if it is encrypted. Stored securely and passed via the SSH_MCP_PASSPHRASE environment variable.",
+      "sensitive": true
+    },
+    "agent": {
+      "type": "string",
+      "title": "SSH Agent",
+      "description": "Use 'env' to use $SSH_AUTH_SOCK, or provide an explicit agent socket path. Provide an agent, a password, or a private key."
+    },
+    "try_keyboard": {
+      "type": "boolean",
+      "title": "Keyboard-Interactive Auth (2FA)",
+      "description": "Enable keyboard-interactive authentication, e.g. for 2FA/MFA prompts.",
+      "default": false
+    }
+  }
+}

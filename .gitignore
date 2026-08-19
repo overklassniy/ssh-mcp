@@ -1,0 +1,42 @@
+# Build artifacts
+# Local binary produced by `make build`.
+/ssh-mcp
+/ssh-mcp.exe
+# Cross-platform build output and goreleaser release output.
+/dist/
+# MCPB bundles produced by `make mcpb`.
+*.mcpb
+
+# Go
+# Vendored dependencies are not used in this project; ignore if introduced.
+/vendor/
+# Test binaries and coverage profiles.
+*.test
+*.out
+coverage.txt
+coverage.html
+# Compiled coverage output from `go tool cover`.
+*.cover
+
+# Goreleaser
+# Local snapshot builds.
+/dist.config.yaml
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local environment / secrets
+.env
+.env.local
+*.pem
+*.key
+known_hosts

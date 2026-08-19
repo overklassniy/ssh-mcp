@@ -1,0 +1,6 @@
+# Files excluded from the ssh-mcp MCPB bundle during packaging.
+# The bundle should contain only manifest.json and the server/ directory
+# with the compiled binary.
+*.bak
+dist/
+.git/

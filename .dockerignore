@@ -1,0 +1,29 @@
+# Exclude non-runtime files from the Docker build context to keep it small
+# and avoid invalidating the module-download cache layer on unrelated changes.
+
+# Build artifacts and local state.
+dist/
+ssh-mcp
+ssh-mcp.exe
+*.mcpb
+
+# Test fixtures are not needed in the image.
+testdata/
+
+# Git metadata.
+.git/
+.gitignore
+
+# Editor and OS cruft.
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# CI configuration is not needed at runtime.
+.github/
+
+# Documentation is not needed at runtime.
+**/README.md
