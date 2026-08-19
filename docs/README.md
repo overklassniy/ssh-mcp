@@ -12,7 +12,7 @@ Wiki by the `wiki-sync` GitHub Actions workflow (see
 
 ## How the wiki sync works
 
-On every push to `main` that touches `docs/**`, the `wiki-sync` workflow
+On every push to `master` that touches `docs/**`, the `wiki-sync` workflow
 copies the contents of this folder to `overklassniy/ssh-mcp.wiki.git`
 using the `Andrew-Chen-Wang/github-wiki-action` action. The wiki tab on
 GitHub then renders the same Markdown you see here.
@@ -20,7 +20,7 @@ GitHub then renders the same Markdown you see here.
 Consequences for editing:
 
 - Edit files here, not in the wiki UI. Edits made in the wiki UI are
-  overwritten on the next push to `main` that touches `docs/`.
+  overwritten on the next push to `master` that touches `docs/`.
 - `Home.md` becomes the wiki landing page (GitHub wikis use `Home.md`,
   not `README.md`, for the homepage).
 - `_Sidebar.md` controls the wiki left navigation shown on every page.

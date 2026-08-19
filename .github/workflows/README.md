@@ -7,32 +7,38 @@ documenting ssh-mcp.
 
 This folder holds the CI/CD pipelines that automate binary releases,
 container image publishing, and wiki documentation sync. Together they
-cover three cadences: stable releases triggered by git tags, continuous
-dev images triggered by pushes to the main branch, and wiki
-documentation mirroring triggered by changes to the docs/ folder.
+cover four cadences: continuous integration on every push and pull
+request, stable releases triggered by git tags, continuous dev images
+triggered by pushes to the master branch, and wiki documentation
+mirroring triggered by changes to the docs/ folder.
 
 ## Contents
 
+- `ci.yml` - continuous integration pipeline. Runs `go build`, `go vet`,
+  and `go test -short` on every push to master and every pull request
+  targeting master. Validates Dependabot dependency bumps and feature
+  branches before merge.
 - `release.yml` - tag-triggered release pipeline. Runs goreleaser to build
   cross-platform binaries and create a draft GitHub Release, then builds a
   multi-arch Docker image (linux/amd64, linux/arm64) and pushes it to GHCR
   and Docker Hub with semver tags (:version, :major, :major.minor, :latest).
-- `dev-image.yml` - main-branch dev image pipeline. Builds and pushes a
+- `dev-image.yml` - master-branch dev image pipeline. Builds and pushes a
   multi-arch Docker image tagged :dev to both registries. No GitHub Release
   is produced. The image embeds a version string of the form
   `dev-<short-sha>`.
-- `wiki-sync.yml` - main-branch documentation sync pipeline. Mirrors the
+- `wiki-sync.yml` - master-branch documentation sync pipeline. Mirrors the
   contents of the `docs/` folder to the repository's GitHub Wiki using
-  `Andrew-Chen-Wang/github-wiki-action`. Runs on any push to main that
+  `Andrew-Chen-Wang/github-wiki-action`. Runs on any push to master that
   touches `docs/**` or the workflow file itself, and on manual dispatch.
 
 ## Triggers
 
 | Workflow | Trigger | Produces |
 | --- | --- | --- |
+| `ci.yml` | Push to `master` or pull request targeting `master` | Build, vet, and test results |
 | `release.yml` | Push of a `v*` tag (e.g. `v1.0.0`) | Draft GitHub Release + `:version`, `:major`, `:major.minor`, `:latest` images |
-| `dev-image.yml` | Push to `main` branch | `:dev` image only |
-| `wiki-sync.yml` | Push to `main` touching `docs/**` | Updated GitHub Wiki mirroring `docs/` |
+| `dev-image.yml` | Push to `master` branch | `:dev` image only |
+| `wiki-sync.yml` | Push to `master` touching `docs/**` | Updated GitHub Wiki mirroring `docs/` |
 
 ## Required secrets
 
@@ -92,7 +98,7 @@ run fails because the wiki repo does not exist yet.
 ### Editing workflow
 
 Edit documentation in `docs/`, never in the wiki UI. Edits made in the
-wiki UI are overwritten on the next push to `main` that touches
+wiki UI are overwritten on the next push to `master` that touches
 `docs/**`. To pull wiki-side edits back into `docs/`, use the action's
 `direction: pull` mode in a separate workflow (not configured here).
 

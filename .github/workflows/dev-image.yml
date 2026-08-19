@@ -1,5 +1,5 @@
 # Dev image workflow: builds and pushes a :dev tagged image on every push
-# to the main branch. No GitHub Release is created.
+# to the master branch. No GitHub Release is created.
 #
 # Produces:
 #   - Container images tagged :dev on GHCR and Docker Hub (linux/amd64,
@@ -13,7 +13,7 @@ name: dev-image
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: read
