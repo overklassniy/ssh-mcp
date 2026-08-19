@@ -1,0 +1,64 @@
+# GoReleaser configuration for ssh-mcp.
+# Produces cross-platform binaries (windows, macOS, Linux) and source
+# archives. Run with: goreleaser release --clean (release) or
+# goreleaser build --clean (local build only).
+version: 2
+
+project_name: ssh-mcp
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: ssh-mcp
+    main: ./cmd/ssh-mcp
+    binary: ssh-mcp
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: default
+    builds:
+      - ssh-mcp
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_
+      {{- if eq .Os "windows" }}windows
+      {{- else if eq .Os "darwin" }}macos
+      {{- else }}{{ .Os }}{{ end }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+      - goos: darwin
+        formats:
+          - zip
+      - goos: linux
+        formats:
+          - tar.gz
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  draft: true
+  replace_existing_draft: true

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-labelledby="spTitle spDesc">
+  <title id="spTitle">ssh-mcp: secure, scoped SSH access for AI assistants</title>
+  <desc id="spDesc">Social preview for ssh-mcp, an MCP server that gives AI clients a small, auditable set of SSH tools. Dark monochrome technical layout with a terminal prompt motif and a connection line from an agent node to a remote node passing through a policy gate.</desc>
+
+  <!-- Canvas: own dark background so the preview reads on both light and dark contexts. -->
+  <rect x="0" y="0" width="1280" height="640" fill="#0D1117"/>
+
+  <!-- Thin frame rule, one stroke weight. -->
+  <rect x="32" y="32" width="1216" height="576" rx="10" ry="10" fill="none" stroke="#30363D" stroke-width="1"/>
+
+  <!-- Faint vertical center rule, subordinate to content. -->
+  <line x1="640" y1="56" x2="640" y2="584" stroke="#21262D" stroke-width="1"/>
+
+  <!-- Left column: identity. -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" text-rendering="geometricPrecision">
+
+    <!-- Eyebrow: mono metadata. -->
+    <text x="72" y="120" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="22" fill="#8B949E" letter-spacing="3">
+      MCP SERVER / SSH
+    </text>
+
+    <!-- Title. -->
+    <text x="72" y="232" font-size="84" font-weight="700" fill="#E6EDF3" letter-spacing="-2">
+      ssh-mcp
+    </text>
+
+    <!-- One-line value, split across two lines so it stays in the left column. -->
+    <text x="72" y="300" font-size="30" fill="#C9D1D9">
+      Secure, scoped SSH access
+    </text>
+    <text x="72" y="340" font-size="30" fill="#C9D1D9">
+      for AI assistants.
+    </text>
+
+    <!-- Mono metadata row, separated by a thin rule. -->
+    <line x1="72" y1="388" x2="600" y2="388" stroke="#30363D" stroke-width="1"/>
+    <text x="72" y="428" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="20" fill="#8B949E" letter-spacing="1">
+      Go 1.26  |  stdio  |  8 tools  |  MIT
+    </text>
+
+    <!-- Tool names as plain mono text (no chip boxes) to avoid width overflow. -->
+    <text x="72" y="488" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#8B949E">
+      execute-command  upload  download  dir-sync
+    </text>
+    <text x="72" y="516" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#8B949E">
+      port-forward  server-status  list-remote  list-servers
+    </text>
+  </g>
+
+  <!-- Right column: project-native motif. -->
+  <g font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" text-rendering="geometricPrecision">
+
+    <!-- Terminal prompt block. -->
+    <rect x="688" y="120" width="512" height="104" rx="8" ry="8" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+    <text x="712" y="160" font-size="22" fill="#8B949E">
+      ssh-mcp $ <tspan fill="#E6EDF3">execute-command</tspan>
+    </text>
+    <text x="712" y="196" font-size="20" fill="#8B949E">
+      &gt; Run df -h on the web server
+    </text>
+
+    <!-- Cursor block placed after the prompt text to avoid overlapping it. -->
+    <rect x="1052" y="142" width="12" height="22" fill="#E6EDF3"/>
+
+    <!-- Connection line: agent -> remote, the scoped bridge. -->
+    <line x1="728" y1="332" x2="1168" y2="332" stroke="#484F58" stroke-width="1.5"/>
+    <circle cx="728" cy="332" r="6" fill="#E6EDF3"/>
+    <circle cx="1168" cy="332" r="6" fill="none" stroke="#E6EDF3" stroke-width="1.5"/>
+
+    <text x="700" y="372" font-size="18" fill="#8B949E" text-anchor="start">
+      agent
+    </text>
+    <text x="1172" y="372" font-size="18" fill="#8B949E" text-anchor="end">
+      remote
+    </text>
+
+    <!-- Policy gate mark on the connection line. -->
+    <rect x="920" y="322" width="56" height="20" rx="4" ry="4" fill="#0D1117" stroke="#484F58" stroke-width="1"/>
+    <text x="948" y="336" font-size="13" fill="#8B949E" text-anchor="middle">
+      policy
+    </text>
+
+    <!-- Policy detail lines. -->
+    <text x="688" y="452" font-size="18" fill="#8B949E">
+      whitelist / blacklist
+    </text>
+    <text x="688" y="484" font-size="18" fill="#8B949E">
+      allowed_local_paths
+    </text>
+    <text x="688" y="516" font-size="18" fill="#8B949E">
+      allowed_remote_paths
+    </text>
+    <text x="688" y="548" font-size="18" fill="#8B949E">
+      secrets via env vars
+    </text>
+  </g>
+</svg>

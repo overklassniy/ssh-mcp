@@ -1,0 +1,53 @@
+name: Feature request
+description: Suggest a new tool, option, or behavior for ssh-mcp.
+title: "[feat]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature for ssh-mcp.
+
+        Please search the existing issues first to avoid duplicates. A
+        feature request should describe a concrete problem and a proposed
+        direction, not just a wishlist item.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this feature solve? What can you not do today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How you imagine ssh-mcp could solve it. A rough sketch is fine.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other ways you considered solving the same problem, and why they fall short.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else relevant. Screenshots, links, related tools, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checks
+      options:
+        - label: I have searched the existing issues for duplicates.
+          required: true

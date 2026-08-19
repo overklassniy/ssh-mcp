@@ -1,0 +1,51 @@
+# Wiki sync workflow: mirrors the contents of the docs/ folder to the
+# repository's GitHub Wiki on every push to main that touches docs/.
+#
+# The docs/ folder is the single source of truth for user documentation.
+# Edit docs there, not in the wiki UI; the next push to main overwrites
+# any wiki-side edits.
+#
+# Uses Andrew-Chen-Wang/github-wiki-action (clone strategy, preprocess
+# on). Same-repo wiki pushes work with the automatic GITHUB_TOKEN plus
+# the contents: write permission declared below; no PAT is needed.
+#
+# One-time manual prerequisite: create a dummy page in the wiki via the
+# GitHub web UI (repo > Wiki > Create the first page) so that the
+# .wiki.git backend exists. Without it, the first run fails because the
+# wiki repo is not initialized.
+#
+# Excluded from the sync:
+#   docs/README.md - describes the docs/ folder locally; not wiki
+#     content.
+name: wiki-sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - .github/workflows/wiki-sync.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync docs to wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync docs/ to wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: docs
+          strategy: clone
+          preprocess: true
+          disable-empty-commits: true
+          ignore: |
+            README.md
+          commit-message: "docs: sync wiki from ${{ github.sha }}"
