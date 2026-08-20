@@ -9,11 +9,6 @@
 # on). Same-repo wiki pushes work with the automatic GITHUB_TOKEN plus
 # the contents: write permission declared below; no PAT is needed.
 #
-# One-time manual prerequisite: create a dummy page in the wiki via the
-# GitHub web UI (repo > Wiki > Create the first page) so that the
-# .wiki.git backend exists. Without it, the first run fails because the
-# wiki repo is not initialized.
-#
 # Excluded from the sync:
 #   docs/README.md - describes the docs/ folder locally; not wiki
 #     content.

@@ -23,7 +23,6 @@ Consequences for editing:
   overwritten on the next push to `master` that touches `docs/`.
 - `Home.md` becomes the wiki landing page (GitHub wikis use `Home.md`,
   not `README.md`, for the homepage).
-- `_Sidebar.md` controls the wiki left navigation shown on every page.
 - `README.md` (this file) is excluded from the sync by the workflow's
   `ignore` input, because it only describes the folder locally and is
   not wiki content.
@@ -32,7 +31,6 @@ Consequences for editing:
 
 - `Home.md` – wiki landing page. Project overview and entry point to the
   rest of the documentation.
-- `_Sidebar.md` – wiki navigation sidebar, shown on every wiki page.
 - `Architecture.md` – package layout, dependency graph, and request data
   flow from an MCP tool call to a remote SSH command.
 - `Installation.md` – full installation guide covering all supported AI
@@ -56,10 +54,6 @@ Consequences for editing:
 
 ## Notes
 
-- One-time manual prerequisite: before the first workflow run, create a
-  dummy page in the wiki via the GitHub web UI. This initializes the
-  `.wiki.git` backend that the workflow pushes to. Without it, the
-  workflow fails because the wiki repo does not exist yet.
 - Links to source files (for example `cmd/ssh-mcp/main.go`) are
   rewritten by the sync action to absolute `blob/` URLs pinned to the
   pushed commit, so they work both in this folder on GitHub and inside

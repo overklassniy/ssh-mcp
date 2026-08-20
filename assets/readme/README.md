@@ -70,35 +70,20 @@ here.
 - Discarded variants should be removed unless explicitly retained as
   source explorations.
 
-## Social preview upload
+## Social preview regeneration
 
-GitHub does not read the social preview from the repository. To set it,
-upload `social-preview.png` manually:
-
-1. Go to the repository Settings > Social preview.
-2. Upload `social-preview.png` (1280x640 PNG).
-3. Save.
-
-The SVG is kept as the editable source. To regenerate the PNG after
-editing the SVG:
+`social-preview.svg` is the editable source; `social-preview.png` is
+the rendered 1280x640 PNG. Regenerate the PNG after editing the SVG:
 
 ```sh
 inkscape --export-type=png --export-filename=social-preview.png \
   --export-width=1280 --export-height=640 social-preview.svg
 ```
 
-## Docker Hub logo upload
+## Docker Hub logo regeneration
 
-Docker Hub does not expose a logo upload API, so the logo cannot be
-synced by the `dockerhub-sync` workflow. Upload `dockerhub-logo.png`
-manually once:
-
-1. Go to Docker Hub > overklassniy/ssh-mcp > Settings.
-2. Under Logo, upload `dockerhub-logo.png` (512x512 PNG).
-3. Save.
-
-The SVG is kept as the editable source. To regenerate the PNG after
-editing the SVG:
+`dockerhub-logo.svg` is the editable source; `dockerhub-logo.png` is
+the rendered 512x512 PNG. Regenerate the PNG after editing the SVG:
 
 ```sh
 inkscape --export-type=png --export-filename=dockerhub-logo.png \

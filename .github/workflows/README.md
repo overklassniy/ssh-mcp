@@ -94,15 +94,6 @@ documentation; the wiki is a rendered mirror.
   because it only describes the folder locally and is not wiki content.
 - `docs/Home.md` becomes the wiki landing page (GitHub wikis use
   `Home.md`, not `README.md`, for the homepage).
-- `docs/_Sidebar.md` controls the wiki left navigation shown on every
-  page.
-
-### One-time manual prerequisite
-
-Before the first run, create a dummy page in the wiki via the GitHub
-web UI (repo > Wiki > Create the first page). This initializes the
-`.wiki.git` backend that the workflow pushes to. Without it, the first
-run fails because the wiki repo does not exist yet.
 
 ### Editing workflow
 
@@ -128,9 +119,8 @@ wiki UI are overwritten on the next push to `master` that touches
   Docker-focused quickstart. It does not read the GitHub `README.md`
   directly, because that file uses HTML align blocks and relative links
   that Docker Hub's Markdown renderer handles inconsistently. The
-  Docker Hub repository logo is uploaded manually once (see
-  `assets/readme/README.md`); the workflow only syncs the text overview
-  and short description.
+  workflow only syncs the text overview and short description; Docker
+  Hub has no logo upload API, so the repository logo is out of scope.
 
 ## Notes
 
