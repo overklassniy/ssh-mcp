@@ -13,35 +13,35 @@ with stable codes) that the MCP tools surface to agents.
 
 ## Contents
 
-- `client.go` - the `SSHClient` interface and `realClient` implementation.
+- `client.go` – the `SSHClient` interface and `realClient` implementation.
   Handles connection establishment (direct or via proxy), keepalive
   goroutine, and mutex-protected access to the underlying `*ssh.Client`.
   Also defines `ExecResult`.
-- `manager.go` - `ConnectionManager` for multiple named servers. Supports
+- `manager.go` – `ConnectionManager` for multiple named servers. Supports
   lazy connection, concurrent-attempt deduplication, reconnection with
   exponential backoff, parallel `ConnectAll`, graceful `Disconnect`, and
   `Invalidate` to force a reconnect on next use.
-- `auth.go` - `BuildAuthMethods` constructs SSH auth methods in order:
+- `auth.go` – `BuildAuthMethods` constructs SSH auth methods in order:
   private key, agent, password, keyboard-interactive. Only configured
   methods are included.
-- `exec.go` - `ExecCommand` runs a command in exec mode. Applies the command
+- `exec.go` – `ExecCommand` runs a command in exec mode. Applies the command
   template, validates against the policy, allocates a PTY when enabled, caps
   output, enforces timeout, and extracts exit code and signal.
-- `shell.go` - persistent shell session mode. Uses random marker lines to
+- `shell.go` – persistent shell session mode. Uses random marker lines to
   frame each command and capture its output and exit code, with a
   ready-detection handshake and per-session mutex.
-- `sftp.go` - `SFTPClient` wraps `github.com/pkg/sftp` with local and remote
+- `sftp.go` – `SFTPClient` wraps `github.com/pkg/sftp` with local and remote
   path validation and concurrent transfer support for uploads, downloads,
   directory sync, and remote listings.
-- `forward.go` - `ForwardManager` for local and remote port forwarding with
+- `forward.go` – `ForwardManager` for local and remote port forwarding with
   open, close, and list actions; tracks active forwards per connection.
-- `proxy.go` - `dialProxy` dials a target through a SOCKS5, HTTP CONNECT, or
+- `proxy.go` – `dialProxy` dials a target through a SOCKS5, HTTP CONNECT, or
   HTTPS CONNECT proxy.
-- `errors.go` - `ToolError` type, `Code` constants (stable strings such as
+- `errors.go` – `ToolError` type, `Code` constants (stable strings such as
   `SSH_CONNECTION_FAILED`, `COMMAND_TIMEOUT`), `NewToolError`, `AsToolError`,
   and `CodeFromError`.
 - `shell_test.go`, `integration_test.go`,
-  `parallel_integration_test.go` - unit and integration tests.
+  `parallel_integration_test.go` – unit and integration tests.
 
 ## Integration with the project
 

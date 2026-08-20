@@ -17,10 +17,10 @@ Do not open a public GitHub issue for a security vulnerability.
 
 To report a vulnerability, use one of these channels:
 
-1. **GitHub private security advisory** - go to
+1. **GitHub private security advisory** – go to
    [Security > Advisories](https://github.com/overklassniy/ssh-mcp/security/advisories/new)
    and create a private report. This is the preferred channel.
-2. **Email** - if you cannot use the advisory flow, contact the
+2. **Email** – if you cannot use the advisory flow, contact the
    maintainer through the GitHub profile listed on the repository page.
 
 Please include:
@@ -53,9 +53,9 @@ be treated as a known design trade-off, not a new vulnerability.
 Security is enforced through two operator-configured mechanisms,
 documented in the README:
 
-- **Command policy** - `whitelist`/`blacklist` regex patterns gate every
+- **Command policy** – `whitelist`/`blacklist` regex patterns gate every
   command, including the probe commands used by `server-status`.
-- **Path restrictions** - `allowed_local_paths` and
+- **Path restrictions** – `allowed_local_paths` and
   `allowed_remote_paths` confine SFTP operations; remote paths must be
   absolute POSIX paths.
 

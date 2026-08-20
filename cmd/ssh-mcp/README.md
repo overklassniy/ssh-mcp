@@ -11,11 +11,11 @@ registers ssh-mcp into a supported AI client's MCP config file.
 
 ## Contents
 
-- `main.go` - the root `cobra.Command`. Defines all single-server and
+- `main.go` – the root `cobra.Command`. Defines all single-server and
   transport/security flags, sets up stderr logging (stdout is reserved for
   MCP stdio), loads configuration from a TOML file or from CLI flags,
   resolves SSH config aliases, and runs the MCP server via `internal/mcp`.
-- `install.go` - the `install` subcommand. Mirrors the root command's
+- `install.go` – the `install` subcommand. Mirrors the root command's
   config/single-server flags, resolves its own executable path, builds an
   `install.Entry` (sensitive values go into the env map, not args), and
   delegates to `internal/install.Install`. Supports `--dry-run`. Also

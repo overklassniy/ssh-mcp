@@ -11,13 +11,13 @@ a shutdown signal is received.
 
 ## Contents
 
-- `server.go` - the `Server` type wrapping an `*server.MCPServer` and a
+- `server.go` – the `Server` type wrapping an `*server.MCPServer` and a
   `*ssh.ConnectionManager`. `New` constructs both and registers all tools via
   `tools.RegisterAll`. `Run` sets up SIGINT/SIGTERM handling, optionally
   pre-connects to all servers when any server has `pre_connect=true`, serves
   the MCP protocol over stdio, and disconnects cleanly on exit. `Manager`
   exposes the connection manager for testing.
-- `tools/` - the implementations of the individual MCP tools.
+- `tools/` – the implementations of the individual MCP tools.
 
 ## Integration with the project
 

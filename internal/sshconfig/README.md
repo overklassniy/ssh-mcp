@@ -12,7 +12,7 @@ config or CLI flags.
 
 ## Contents
 
-- `parser.go` - the `Entry` struct (resolved parameters for one alias);
+- `parser.go` – the `Entry` struct (resolved parameters for one alias);
   `Lookup` (finds the config for an alias, defaulting to `~/.ssh/config`);
   `parseFile` (tokenizes a config file, following `Include` directives with
   cycle detection); `matchHost` (first-match-wins resolution across all
@@ -20,7 +20,7 @@ config or CLI flags.
   negated-pattern matching); `expandInclude` (resolves `Include` patterns
   relative to the including file, with tilde and glob expansion);
   `expandTilde`; `stripComment`; and `homeDir`.
-- `parser_test.go` - unit tests for parsing, includes, wildcards, negation,
+- `parser_test.go` – unit tests for parsing, includes, wildcards, negation,
   and first-match-wins semantics.
 
 ## Integration with the project

@@ -30,19 +30,19 @@ Consequences for editing:
 
 ## Contents
 
-- `Home.md` - wiki landing page. Project overview and entry point to the
+- `Home.md` – wiki landing page. Project overview and entry point to the
   rest of the documentation.
-- `_Sidebar.md` - wiki navigation sidebar, shown on every wiki page.
-- `Architecture.md` - package layout, dependency graph, and request data
+- `_Sidebar.md` – wiki navigation sidebar, shown on every wiki page.
+- `Architecture.md` – package layout, dependency graph, and request data
   flow from an MCP tool call to a remote SSH command.
-- `Installation.md` - full installation guide covering all supported AI
+- `Installation.md` – full installation guide covering all supported AI
   clients, Docker mode, and MCPB one-click bundles.
-- `Configuration.md` - complete TOML configuration reference: the
+- `Configuration.md` – complete TOML configuration reference: the
   `[defaults]` section, `[[server]]` entries, auth methods, policy,
   allowed paths, keepalive, and transport modes.
-- `Tools.md` - reference for the eight MCP tools: arguments, return
+- `Tools.md` – reference for the eight MCP tools: arguments, return
   values, and examples.
-- `Troubleshooting.md` - common issues and their fixes.
+- `Troubleshooting.md` – common issues and their fixes.
 
 ## Integration with the project
 

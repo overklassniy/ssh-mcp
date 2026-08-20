@@ -13,7 +13,7 @@ status-collector implementation.
 
 ## Contents
 
-- `collector.go` - the `ServerStatus` struct (JSON-tagged fields for all
+- `collector.go` – the `ServerStatus` struct (JSON-tagged fields for all
   collected metrics); the `CommandRunner` function type (runs a command on a
   named server and returns stdout); `CollectSystemStatus` (filters probes
   through the policy, builds the batched script, runs it, and parses the
@@ -21,7 +21,7 @@ status-collector implementation.
   `buildStatusScript` (joins probes with marker lines); and
   `parseStatusScriptOutput` (extracts field values from the marker-delimited
   output).
-- `collector_test.go` - unit tests for script building, output parsing, and
+- `collector_test.go` – unit tests for script building, output parsing, and
   policy filtering.
 
 ## Integration with the project
