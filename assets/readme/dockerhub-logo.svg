@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">ssh-mcp logo</title>
+  <desc id="logoDesc">Square logo for ssh-mcp. Light card with the project name, a terminal prompt, and a simplified agent-to-remote connection line through a policy gate.</desc>
+
+  <!-- Rounded card background. -->
+  <rect x="0" y="0" width="512" height="512" rx="64" ry="64" fill="#FFFFFF"/>
+
+  <!-- Thin frame rule. -->
+  <rect x="16" y="16" width="480" height="480" rx="52" ry="52" fill="none" stroke="#D0D7DE" stroke-width="2"/>
+
+  <!-- Eyebrow: mono metadata. -->
+  <text x="256" y="120" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="22" fill="#656D76" letter-spacing="3" text-anchor="middle" text-rendering="geometricPrecision">
+    MCP SERVER / SSH
+  </text>
+
+  <!-- Title. -->
+  <text x="256" y="200" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="72" font-weight="700" fill="#1F2328" letter-spacing="-2" text-anchor="middle" text-rendering="geometricPrecision">
+    ssh-mcp
+  </text>
+
+  <!-- Terminal prompt block. Widened so the cursor fits past the text. -->
+  <rect x="76" y="240" width="360" height="56" rx="8" ry="8" fill="#F6F8FA" stroke="#D0D7DE" stroke-width="1.5"/>
+  <text x="96" y="276" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="20" fill="#656D76" text-rendering="geometricPrecision">
+    ssh-mcp $ <tspan fill="#1F2328">execute-command</tspan>
+  </text>
+
+  <!-- Cursor block placed after the prompt text to avoid overlapping it. -->
+  <rect x="404" y="260" width="10" height="20" fill="#1F2328"/>
+
+  <!-- Connection line: agent -> remote. -->
+  <line x1="136" y1="360" x2="370" y2="360" stroke="#1F2328" stroke-width="2"/>
+  <circle cx="136" cy="360" r="7" fill="#1F2328"/>
+  <circle cx="376" cy="360" r="7" fill="none" stroke="#1F2328" stroke-width="2"/>
+
+  <!-- Agent / remote labels, centered under their circles. -->
+  <text x="136" y="396" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#656D76" text-anchor="middle" text-rendering="geometricPrecision">
+    agent
+  </text>
+  <text x="376" y="396" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#656D76" text-anchor="middle" text-rendering="geometricPrecision">
+    remote
+  </text>
+
+  <!-- Policy gate mark on the connection line. -->
+  <rect x="232" y="350" width="48" height="20" rx="4" ry="4" fill="#FFFFFF" stroke="#1F2328" stroke-width="1.5"/>
+  <text x="256" y="364" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="12" fill="#1F2328" text-anchor="middle" text-rendering="geometricPrecision">
+    policy
+  </text>
+
+  <!-- Bottom mono metadata. -->
+  <text x="256" y="448" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="16" fill="#656D76" letter-spacing="1" text-anchor="middle" text-rendering="geometricPrecision">
+    Go 1.26  |  8 tools  |  MIT
+  </text>
+</svg>

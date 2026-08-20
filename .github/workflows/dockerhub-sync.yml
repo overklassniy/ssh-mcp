@@ -1,0 +1,47 @@
+# Docker Hub description sync: pushes DOCKERHUB.md to the Docker Hub
+# repository overview (the "Overview" tab) and sets the short description.
+#
+# Uses peter-evans/dockerhub-description@v5.0.0, which calls the Docker
+# Hub API directly with the DOCKERHUB_TOKEN. No GitHub token permissions
+# are needed beyond the default read-only checkout.
+#
+# Required secrets (already configured for release.yml / dev-image.yml):
+#   DOCKERHUB_USERNAME - Docker Hub account name.
+#   DOCKERHUB_TOKEN    - Docker Hub access token with read/write/delete
+#                       scope (the image-push token works if it has those
+#                       scopes; otherwise create a dedicated token).
+#
+# The logo is NOT synced by this workflow; Docker Hub does not expose a
+# logo upload API. Upload assets/readme/dockerhub-logo.png manually once
+# via Docker Hub > Repository > Settings > Logo.
+name: dockerhub-sync
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - DOCKERHUB.md
+      - .github/workflows/dockerhub-sync.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sync overview to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v5.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: overklassniy/ssh-mcp
+          readme-filepath: ./DOCKERHUB.md
+          short-description: "SSH MCP server: execute commands, transfer files, and forward ports on remote servers via MCP."
+          enable-url-completion: true
