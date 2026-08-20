@@ -373,3 +373,76 @@ func contains(args []string, flag, value string) bool {
 	}
 	return false
 }
+
+// TestGoRunEntry_DefaultTarget verifies that an empty Target falls back to
+// DefaultGoRunTarget and that the command is `go run <target> ...extra`.
+func TestGoRunEntry_DefaultTarget(t *testing.T) {
+	entry := GoRunEntry(GoRunEntryOptions{
+		ExtraArgs: []string{"--host", "1.2.3.4", "--user", "alice"},
+	})
+
+	if entry.Command != "go" {
+		t.Fatalf("command = %q, want go", entry.Command)
+	}
+	wantPrefix := []string{
+		"run", DefaultGoRunTarget,
+		"--host", "1.2.3.4", "--user", "alice",
+	}
+	if len(entry.Args) != len(wantPrefix) {
+		t.Fatalf("args = %v, want %v", entry.Args, wantPrefix)
+	}
+	for i, w := range wantPrefix {
+		if entry.Args[i] != w {
+			t.Errorf("args[%d] = %q, want %q (full=%v)", i, entry.Args[i], w, entry.Args)
+		}
+	}
+}
+
+// TestGoRunEntry_CustomTarget verifies that an explicit Target overrides
+// the default.
+func TestGoRunEntry_CustomTarget(t *testing.T) {
+	entry := GoRunEntry(GoRunEntryOptions{
+		Target: "github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@v1.2.3",
+	})
+
+	if len(entry.Args) < 2 || entry.Args[0] != "run" || entry.Args[1] != "github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@v1.2.3" {
+		t.Fatalf("args = %v, want run <custom-target> as prefix", entry.Args)
+	}
+}
+
+// TestGoRunEntry_SecretsInEnv verifies that password and passphrase land
+// in the env map and never in args, matching the project security model.
+func TestGoRunEntry_SecretsInEnv(t *testing.T) {
+	entry := GoRunEntry(GoRunEntryOptions{
+		ExtraArgs:  []string{"--host", "1.2.3.4", "--user", "alice"},
+		Password:   "s3cret",
+		Passphrase: "pp",
+	})
+
+	if entry.Env["SSH_MCP_PASSWORD"] != "s3cret" {
+		t.Errorf("env SSH_MCP_PASSWORD = %q, want s3cret", entry.Env["SSH_MCP_PASSWORD"])
+	}
+	if entry.Env["SSH_MCP_PASSPHRASE"] != "pp" {
+		t.Errorf("env SSH_MCP_PASSPHRASE = %q, want pp", entry.Env["SSH_MCP_PASSPHRASE"])
+	}
+	for _, a := range entry.Args {
+		if a == "s3cret" || a == "pp" {
+			t.Errorf("secret leaked into args: %q (full=%v)", a, entry.Args)
+		}
+	}
+}
+
+// TestGoRunEntry_NoSecretsOmitsEnv verifies that empty password and
+// passphrase produce an empty (or absent) env map.
+func TestGoRunEntry_NoSecretsOmitsEnv(t *testing.T) {
+	entry := GoRunEntry(GoRunEntryOptions{
+		ExtraArgs: []string{"--host", "1.2.3.4"},
+	})
+
+	if _, ok := entry.Env["SSH_MCP_PASSWORD"]; ok {
+		t.Errorf("SSH_MCP_PASSWORD should be absent when password is empty")
+	}
+	if _, ok := entry.Env["SSH_MCP_PASSPHRASE"]; ok {
+		t.Errorf("SSH_MCP_PASSPHRASE should be absent when passphrase is empty")
+	}
+}

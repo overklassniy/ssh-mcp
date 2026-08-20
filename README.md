@@ -114,6 +114,21 @@ the full guide.
 - **MCPB one-click bundle** – download the `.mcpb` bundle from the
   Releases page and open it in a client that supports MCPB (Claude
   Desktop, Claude Code, MCP for Windows).
+- **Paste-in config** – skip the installer and paste a ready-made
+  server entry directly into your client's config. The `snippet`
+  subcommand generates it for your exact setup:
+
+  ```sh
+  ssh-mcp snippet --docker --host 192.168.1.1 --user root
+  ssh-mcp snippet --gorun  --host 192.168.1.1 --user root
+  ```
+
+  Docker uses the published multi-arch image; `--gorun` uses
+  `go run github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@latest` (the
+  Go-native equivalent of `npx -y <package>`, requires the Go
+  toolchain). Secrets stay in the `env` block, never in `args`. See
+  [Installation](docs/Installation.md#option-d-paste-in-config) for
+  ready-to-paste JSON blocks.
 
 Single-server mode skips the TOML file and takes connection details as
 CLI flags:

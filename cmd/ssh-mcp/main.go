@@ -69,9 +69,11 @@ func main() {
 	// Logging
 	rootCmd.Flags().String("log-level", "info", "Log level: debug, info, or error")
 
-	// Register the install subcommand. It is defined in install.go so the
-	// root command stays focused on the default run mode.
+	// Register the install and snippet subcommands. They are defined in
+	// install.go so the root command stays focused on the default run
+	// mode.
 	rootCmd.AddCommand(newInstallCmd())
+	rootCmd.AddCommand(newSnippetCmd())
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
