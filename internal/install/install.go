@@ -343,6 +343,55 @@ func DockerEntry(opts DockerEntryOptions) Entry {
 	return Entry{Command: "docker", Args: args}
 }
 
+// DefaultGoRunTarget is the module path appended after `go run` in
+// GoRunEntry. It points at the public module's main package so that
+// `go run ...@latest` fetches and builds the latest tagged release without
+// a local checkout.
+const DefaultGoRunTarget = "github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@latest"
+
+// GoRunEntryOptions controls how a `go run`-based server entry is built.
+type GoRunEntryOptions struct {
+	// Target is the module path (with optional @version) appended after
+	// `go run`. Defaults to DefaultGoRunTarget.
+	Target string
+	// ExtraArgs are ssh-mcp CLI flags appended after the target, used in
+	// single-server mode (e.g. --host, --user, ...).
+	ExtraArgs []string
+	// Password and Passphrase are placed in the env map (SSH_MCP_PASSWORD,
+	// SSH_MCP_PASSPHRASE) so they never appear in args. Either may be
+	// empty; an empty value is omitted from the env map.
+	Password string
+	// Passphrase is the private key passphrase, forwarded via env.
+	Passphrase string
+}
+
+// GoRunEntry builds an Entry that launches ssh-mcp via `go run
+// <target>` using the public Go module. This is the Go-native equivalent
+// of `npx -y <package>`: it fetches and compiles the latest tagged release
+// on first run, then starts the stdio MCP server.
+//
+// Sensitive values (password, passphrase) are placed in the env map rather
+// than args so they are not visible in process argument listings. The
+// caller is responsible for ensuring the Go toolchain is installed.
+func GoRunEntry(opts GoRunEntryOptions) Entry {
+	target := opts.Target
+	if target == "" {
+		target = DefaultGoRunTarget
+	}
+
+	args := append([]string{"run", target}, opts.ExtraArgs...)
+
+	env := map[string]string{}
+	if opts.Password != "" {
+		env["SSH_MCP_PASSWORD"] = opts.Password
+	}
+	if opts.Passphrase != "" {
+		env["SSH_MCP_PASSPHRASE"] = opts.Passphrase
+	}
+
+	return Entry{Command: "go", Args: args, Env: env}
+}
+
 // mergeEntry parses the existing config bytes (which may be empty or
 // missing), ensures the root key object exists, sets the named server entry
 // under it, and returns the pretty-printed JSON. Other top-level keys and
