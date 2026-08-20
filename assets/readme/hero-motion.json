@@ -1,0 +1,35 @@
+{
+  "width": 1200,
+  "fps": 30,
+  "duration": 5.0,
+  "colors": 256,
+  "dither": "none",
+  "clip_to_base_alpha": true,
+  "max_size_mb": 2.0,
+  "reveals": [
+    {
+      "id": "connection",
+      "axis": "x",
+      "start": 1.2,
+      "end": 2.2,
+      "exit": {"start": 4.2, "end": 4.9}
+    }
+  ],
+  "layers": [
+    {
+      "id": "title-block",
+      "enter": {"start": 0.2, "end": 1.0, "from": [0, 12]},
+      "exit": {"start": 4.2, "end": 4.9, "to": [0, -8]}
+    },
+    {
+      "id": "terminal",
+      "enter": {"start": 0.6, "end": 1.4, "from": [12, 0]},
+      "exit": {"start": 4.2, "end": 4.9, "to": [8, 0]}
+    },
+    {
+      "id": "policy-gate",
+      "enter": {"start": 2.0, "end": 2.6, "from": [0, -6]},
+      "exit": {"start": 4.2, "end": 4.9, "to": [0, 4]}
+    }
+  ]
+}

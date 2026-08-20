@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="ssh-mcp: an MCP server that gives AI assistants secure, scoped SSH access to remote servers. Monochrome technical hero with a terminal prompt and an agent-to-remote connection line passing through a policy gate.">
+  <img src="./assets/readme/hero.gif" width="100%" alt="ssh-mcp: an MCP server that gives AI assistants secure, scoped SSH access to remote servers. Light technical hero with a terminal prompt and an agent-to-remote connection line drawn through a policy gate.">
 </p>
 
 <p align="center">
-  <a href="https://go.dev/doc/go1.26"><img src="https://img.shields.io/badge/Go-1.26+-00ADD8?logo=go&logoColor=white" alt="Go 1.26+"></a>
-  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-server-6E4B9E" alt="MCP server"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
-  <a href="#compatibility"><img src="https://img.shields.io/badge/platforms-win%20%7C%20mac%20%7C%20linux-lightgrey" alt="Platforms: Windows, macOS, Linux"></a>
+  <a href="https://github.com/overklassniy/ssh-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/overklassniy/ssh-mcp/ci.yml?style=flat-square&label=CI" alt="CI status"></a>
+  <a href="https://go.dev/doc/go1.26"><img src="https://img.shields.io/badge/Go-1.26+-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go 1.26+"></a>
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-server-6E4B9E?style=flat-square" alt="MCP server"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/overklassniy/ssh-mcp?style=flat-square" alt="License: MIT"></a>
 </p>
 
 # ssh-mcp
@@ -27,13 +27,13 @@ get a raw shell (unsafe, unscoped) or have no SSH access at all.
 tools, each gated by an optional command whitelist/blacklist and path
 restrictions, so the operator controls exactly what the agent can do.
 
-- **Command policy** - `whitelist` and `blacklist` regex patterns gate
+- **Command policy** – `whitelist` and `blacklist` regex patterns gate
   every command before execution. Without a whitelist, all commands are
   allowed and a warning is logged at startup.
-- **Path restrictions** - `allowed_local_paths` and `allowed_remote_paths`
+- **Path restrictions** – `allowed_local_paths` and `allowed_remote_paths`
   confine SFTP transfers to specific directories and reject path
   traversal.
-- **Secrets via env vars** - password, passphrase, and 2FA code are
+- **Secrets via env vars** – password, passphrase, and 2FA code are
   passed via environment variables, never on the command line.
 
 ## Tools at a glance
@@ -101,16 +101,16 @@ You should see your server with a `connected` or `disconnected` status.
 
 ## Installation
 
-Three install paths produce the same result - an MCP server entry in
+Three install paths produce the same result – an MCP server entry in
 your client's config file. See [Installation](docs/Installation.md) for
 the full guide.
 
-- **Local binary** - `make build`, then `ssh-mcp install --client <client>
+- **Local binary** – `make build`, then `ssh-mcp install --client <client>
   --config ./ssh-mcp.toml`. Supported clients: `claude-desktop`,
   `claude-code`, `cursor`, `Devin`, `vscode`, `cline`.
-- **Docker** - `ssh-mcp install --client <client> --docker --config
+- **Docker** – `ssh-mcp install --client <client> --docker --config
   ./ssh-mcp.toml`. Defaults to `ghcr.io/overklassniy/ssh-mcp:latest`.
-- **MCPB one-click bundle** - download the `.mcpb` bundle from the
+- **MCPB one-click bundle** – download the `.mcpb` bundle from the
   Releases page and open it in a client that supports MCPB (Claude
   Desktop, Claude Code, MCP for Windows).
 
@@ -153,10 +153,10 @@ modes, and validation rules.
 `ssh-mcp` does not verify remote host keys (`InsecureIgnoreHostKey`).
 Security is enforced through two operator-configured mechanisms:
 
-- **Command policy** - `whitelist`/`blacklist` regex patterns gate every
+- **Command policy** – `whitelist`/`blacklist` regex patterns gate every
   command, including the individual probe commands used by
   `server-status`, so a restrictive whitelist cannot be bypassed.
-- **Path restrictions** - `allowed_local_paths` and `allowed_remote_paths`
+- **Path restrictions** – `allowed_local_paths` and `allowed_remote_paths`
   confine SFTP operations; remote paths must be absolute POSIX paths.
 
 Sensitive values are injected via environment variables:
@@ -169,21 +169,21 @@ Sensitive values are injected via environment variables:
 
 ## Compatibility
 
-- **Clients** - Claude Desktop, Claude Code, Cursor, Devin, VS Code,
+- **Clients** – Claude Desktop, Claude Code, Cursor, Devin, VS Code,
   Cline.
-- **Platforms** - Windows, macOS, Linux (`amd64`, `arm64`).
-- **Runtime** - Go 1.26+ to build, or a prebuilt binary from the
+- **Platforms** – Windows, macOS, Linux (`amd64`, `arm64`).
+- **Runtime** – Go 1.26+ to build, or a prebuilt binary from the
   Releases page.
 
 ## Documentation
 
-- [Installation](docs/Installation.md) - local binary, Docker, and MCPB
+- [Installation](docs/Installation.md) – local binary, Docker, and MCPB
   one-click bundles.
-- [Configuration](docs/Configuration.md) - full TOML reference.
-- [Tools](docs/Tools.md) - the eight MCP tools, arguments, and examples.
-- [Architecture](docs/Architecture.md) - package layout and request
+- [Configuration](docs/Configuration.md) – full TOML reference.
+- [Tools](docs/Tools.md) – the eight MCP tools, arguments, and examples.
+- [Architecture](docs/Architecture.md) – package layout and request
   data flow.
-- [Troubleshooting](docs/Troubleshooting.md) - common issues and fixes.
+- [Troubleshooting](docs/Troubleshooting.md) – common issues and fixes.
 
 The same pages are mirrored to the repository's GitHub Wiki by the
 `wiki-sync` workflow; edit them in `docs/`, not in the wiki UI.
