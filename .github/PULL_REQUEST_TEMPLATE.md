@@ -17,16 +17,16 @@ issue with `Refs #N` or `Fixes #N` / `Closes #N`.
 
 Mark the relevant type(s) per Conventional Commits:
 
-- [ ] feat - new feature for the user
-- [ ] fix - bug fix
-- [ ] docs - documentation only
-- [ ] style - formatting, whitespace, no code change
-- [ ] refactor - restructuring without behavior change
-- [ ] perf - performance improvement
-- [ ] test - adding or correcting tests
-- [ ] build - build system or dependency changes
-- [ ] ci - CI configuration changes
-- [ ] chore - routine maintenance
+- [ ] feat – new feature for the user
+- [ ] fix – bug fix
+- [ ] docs – documentation only
+- [ ] style – formatting, whitespace, no code change
+- [ ] refactor – restructuring without behavior change
+- [ ] perf – performance improvement
+- [ ] test – adding or correcting tests
+- [ ] build – build system or dependency changes
+- [ ] ci – CI configuration changes
+- [ ] chore – routine maintenance
 
 ## Verification
 

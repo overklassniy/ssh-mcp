@@ -12,18 +12,18 @@ of a config file.
 
 ## Contents
 
-- `config.go` - the `Config`, `Defaults`, and `ServerConfig` structs with
+- `config.go` – the `Config`, `Defaults`, and `ServerConfig` structs with
   TOML tags; the `Duration` wrapper type (with `UnmarshalText` /
   `MarshalText` for `time.ParseDuration` strings); and the built-in default
   constants (timeouts, max output bytes, keepalive, transport).
-- `loader.go` - `Load` (read and parse a TOML file), `FromServer` (build a
+- `loader.go` – `Load` (read and parse a TOML file), `FromServer` (build a
   `Config` from a single `ServerConfig` for CLI single-server mode),
   `applyDefaults` (per-server inheritance from `[defaults]` then built-in
   defaults), `validate` (required fields, port range, auth method, transport
   value, command template placeholder), `ResolveSSHConfig` (fill missing
   fields from `~/.ssh/config`), `ExpandHome`, and accessor methods on
   `Config` and `ServerConfig`.
-- `loader_test.go` - unit tests for loading, default application, and
+- `loader_test.go` – unit tests for loading, default application, and
   validation.
 
 ## Integration with the project

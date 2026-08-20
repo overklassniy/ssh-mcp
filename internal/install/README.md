@@ -14,10 +14,10 @@ servers.
 
 ## Contents
 
-- `install.go` - client spec table, path resolution, JSON merge logic, the
+- `install.go` – client spec table, path resolution, JSON merge logic, the
   `Install` entry point, and the `DockerEntry` builder for container-based
   installs.
-- `install_test.go` - unit tests covering merge semantics, the VS Code
+- `install_test.go` – unit tests covering merge semantics, the VS Code
   `servers` quirk, backup creation, parent-dir creation, per-OS path
   resolution, and the docker entry shape (config mode, agent socket,
   default image, minimal entry).
@@ -46,15 +46,15 @@ agent config file is written; only the entry shape changes.
 
 `DockerEntry` accepts a `DockerEntryOptions` struct with:
 
-- `Image` - container image (defaults to `DefaultDockerImage`, the GHCR
+- `Image` – container image (defaults to `DefaultDockerImage`, the GHCR
   primary registry).
-- `ConfigPath` - host-side TOML config path, mounted read-only at
+- `ConfigPath` – host-side TOML config path, mounted read-only at
   `/config.toml` inside the container.
-- `Home` - host home directory, bind-mounted at the same absolute path so
+- `Home` – host home directory, bind-mounted at the same absolute path so
   that `~/` paths in the config resolve identically inside the container.
-- `AgentSocket` - host SSH agent socket path (value of `$SSH_AUTH_SOCK`),
+- `AgentSocket` – host SSH agent socket path (value of `$SSH_AUTH_SOCK`),
   mounted at the same path with `SSH_AUTH_SOCK` forwarded.
-- `ExtraArgs` - additional ssh-mcp CLI flags appended after the image name
+- `ExtraArgs` – additional ssh-mcp CLI flags appended after the image name
   (used in single-server mode).
 
 Sensitive values (`SSH_MCP_PASSWORD`, `SSH_MCP_PASSPHRASE`,

@@ -10,7 +10,7 @@ them easy to reference via relative paths and keeps test inputs visible.
 
 ## Contents
 
-- `sample.toml` - a sample ssh-mcp TOML configuration used by the config
+- `sample.toml` – a sample ssh-mcp TOML configuration used by the config
   loader tests. It contains a `[defaults]` section (timeouts, max output
   bytes, keepalive, PTY, transport) and two `[[server]]` entries: a `dev`
   server in exec mode with a command whitelist and allowed remote paths, and

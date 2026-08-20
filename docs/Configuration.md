@@ -54,11 +54,11 @@ them.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `username` | string | - | SSH username |
+| `username` | string | – | SSH username |
 | `port` | int | 22 | SSH port (1-65535) |
-| `password` | string | - | Password auth (or `SSH_MCP_PASSWORD`) |
-| `private_key` | string | - | Path to a private key file |
-| `passphrase` | string | - | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
+| `password` | string | – | Password auth (or `SSH_MCP_PASSWORD`) |
+| `private_key` | string | – | Path to a private key file |
+| `passphrase` | string | – | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
 | `agent` | bool | false | Use the SSH agent (`SSH_AUTH_SOCK`) |
 | `try_keyboard` | bool | false | Try keyboard-interactive auth (2FA) |
 | `timeout` | duration | `30s` | Per-command timeout |
@@ -67,7 +67,7 @@ them.
 | `max_output_bytes` | int | 1048576 | Cap on captured stdout/stderr |
 | `transport` | string | `exec` | `exec` or `shell` |
 | `pty` | bool | false | Allocate a PTY for commands |
-| `command_template` | string | - | Wrap commands (must contain `<command>` or `<quotedCommand>`) |
+| `command_template` | string | – | Wrap commands (must contain `<command>` or `<quotedCommand>`) |
 
 ## `[[server]]`
 
@@ -81,9 +81,9 @@ method.
 | `host` | string | required | Hostname or IP address |
 | `username` | string | required | SSH username (inheritable) |
 | `port` | int | 22 | SSH port (inheritable) |
-| `password` | string | - | Password auth (or `SSH_MCP_PASSWORD`) |
-| `private_key` | string | - | Path to a private key file |
-| `passphrase` | string | - | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
+| `password` | string | – | Password auth (or `SSH_MCP_PASSWORD`) |
+| `private_key` | string | – | Path to a private key file |
+| `passphrase` | string | – | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
 | `agent` | bool | false | Use the SSH agent |
 | `try_keyboard` | bool | false | Try keyboard-interactive auth (2FA) |
 | `timeout` | duration | `30s` | Per-command timeout |
@@ -92,14 +92,14 @@ method.
 | `max_output_bytes` | int | 1048576 | Output cap |
 | `transport` | string | `exec` | `exec` or `shell` |
 | `pty` | bool | false | Allocate a PTY |
-| `command_template` | string | - | Wrap commands |
+| `command_template` | string | – | Wrap commands |
 | `pre_connect` | bool | false | Connect at startup instead of lazily |
-| `whitelist` | []string | - | Regex patterns a command must match |
-| `blacklist` | []string | - | Regex patterns a command must not match |
-| `allowed_local_paths` | []string | - | Local roots for SFTP uploads/downloads |
-| `allowed_remote_paths` | []string | - | Remote roots for SFTP operations |
-| `proxy_url` | string | - | SOCKS5 or HTTP CONNECT proxy URL |
-| `ssh_config` | string | - | Path to an OpenSSH config for alias resolution |
+| `whitelist` | []string | – | Regex patterns a command must match |
+| `blacklist` | []string | – | Regex patterns a command must not match |
+| `allowed_local_paths` | []string | – | Local roots for SFTP uploads/downloads |
+| `allowed_remote_paths` | []string | – | Remote roots for SFTP operations |
+| `proxy_url` | string | – | SOCKS5 or HTTP CONNECT proxy URL |
+| `ssh_config` | string | – | Path to an OpenSSH config for alias resolution |
 
 ## Authentication
 

@@ -11,12 +11,12 @@ an optional blacklist of regular-expression patterns.
 
 ## Contents
 
-- `policy.go` - the `Policy` type holding compiled whitelist and blacklist
+- `policy.go` – the `Policy` type holding compiled whitelist and blacklist
   regexps; `New` (compiles pattern strings, returning an error that names the
   offending pattern and kind on invalid regex); `HasWhitelist` and
   `HasBlacklist` reporters; and `Validate`, which returns
   `(allowed bool, reason string)`.
-- `policy_test.go` - unit tests for whitelist-only, blacklist-only, combined,
+- `policy_test.go` – unit tests for whitelist-only, blacklist-only, combined,
   and invalid-pattern cases.
 
 ## Integration with the project

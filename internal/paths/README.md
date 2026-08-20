@@ -11,7 +11,7 @@ operation is performed.
 
 ## Contents
 
-- `paths.go` - `ValidateLocal` (resolves a local path to an absolute form,
+- `paths.go` – `ValidateLocal` (resolves a local path to an absolute form,
   requires the parent directory to exist for writes, and checks it is within
   an allowed root), `ValidateRemote` (requires an absolute POSIX path and
   checks it against allowed remote roots, accepting any absolute path when
@@ -19,7 +19,7 @@ operation is performed.
   deduplicates allowed local roots, always including the current working
   directory as the first root), `Cwd` (returns the current working
   directory), and the internal `isWithinRoot` helper.
-- `paths_test.go` - unit tests for local and remote validation, traversal
+- `paths_test.go` – unit tests for local and remote validation, traversal
   rejection, and root resolution.
 
 ## Integration with the project
