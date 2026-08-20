@@ -7,29 +7,37 @@ documenting ssh-mcp.
 
 This folder holds the CI/CD pipelines that automate binary releases,
 container image publishing, and wiki documentation sync. Together they
-cover four cadences: continuous integration on every push and pull
+cover five cadences: continuous integration on every push and pull
 request, stable releases triggered by git tags, continuous dev images
-triggered by pushes to the master branch, and wiki documentation
-mirroring triggered by changes to the docs/ folder.
+triggered by pushes to the master branch, wiki documentation mirroring
+triggered by changes to the docs/ folder, and Docker Hub overview sync
+triggered by changes to DOCKERHUB.md.
 
 ## Contents
 
-- `ci.yml` - continuous integration pipeline. Runs `go build`, `go vet`,
+- `ci.yml` – continuous integration pipeline. Runs `go build`, `go vet`,
   and `go test -short` on every push to master and every pull request
   targeting master. Validates Dependabot dependency bumps and feature
   branches before merge.
-- `release.yml` - tag-triggered release pipeline. Runs goreleaser to build
+- `release.yml` – tag-triggered release pipeline. Runs goreleaser to build
   cross-platform binaries and create a draft GitHub Release, then builds a
   multi-arch Docker image (linux/amd64, linux/arm64) and pushes it to GHCR
   and Docker Hub with semver tags (:version, :major, :major.minor, :latest).
-- `dev-image.yml` - master-branch dev image pipeline. Builds and pushes a
+- `dev-image.yml` – master-branch dev image pipeline. Builds and pushes a
   multi-arch Docker image tagged :dev to both registries. No GitHub Release
   is produced. The image embeds a version string of the form
   `dev-<short-sha>`.
-- `wiki-sync.yml` - master-branch documentation sync pipeline. Mirrors the
+- `wiki-sync.yml` – master-branch documentation sync pipeline. Mirrors the
   contents of the `docs/` folder to the repository's GitHub Wiki using
   `Andrew-Chen-Wang/github-wiki-action`. Runs on any push to master that
   touches `docs/**` or the workflow file itself, and on manual dispatch.
+- `dockerhub-sync.yml` – master-branch Docker Hub overview sync pipeline.
+  Pushes the root `DOCKERHUB.md` to the Docker Hub repository overview
+  (the "Overview" tab) and sets the short description using
+  `peter-evans/dockerhub-description@v5.0.0`. Runs on any push to master
+  that touches `DOCKERHUB.md` or the workflow file itself, and on manual
+  dispatch. Does not sync the logo (Docker Hub has no logo upload API;
+  see `assets/readme/README.md`).
 
 ## Triggers
 
@@ -39,6 +47,7 @@ mirroring triggered by changes to the docs/ folder.
 | `release.yml` | Push of a `v*` tag (e.g. `v1.0.0`) | Draft GitHub Release + `:version`, `:major`, `:major.minor`, `:latest` images |
 | `dev-image.yml` | Push to `master` branch | `:dev` image only |
 | `wiki-sync.yml` | Push to `master` touching `docs/**` | Updated GitHub Wiki mirroring `docs/` |
+| `dockerhub-sync.yml` | Push to `master` touching `DOCKERHUB.md` | Updated Docker Hub overview and short description |
 
 ## Required secrets
 
@@ -48,8 +57,8 @@ Actions, so no extra secret is needed for GHCR pushes.
 Docker Hub requires two repository secrets (add them under Settings >
 Secrets and variables > Actions):
 
-- `DOCKERHUB_USERNAME` - the Docker Hub account name to push as.
-- `DOCKERHUB_TOKEN` - a Docker Hub access token (not the account password).
+- `DOCKERHUB_USERNAME` – the Docker Hub account name to push as.
+- `DOCKERHUB_TOKEN` – a Docker Hub access token (not the account password).
 
 If the Docker Hub secrets are missing, the Docker Hub login step fails
 gracefully (`continue-on-error: true`) and the GHCR push still succeeds.
@@ -114,6 +123,14 @@ wiki UI are overwritten on the next push to `master` that touches
   into the binary via `-ldflags`, matching the goreleaser ldflags.
 - `wiki-sync.yml` reads from the `docs/` folder, whose contents and
   purpose are described in `docs/README.md`.
+- `dockerhub-sync.yml` reads the root `DOCKERHUB.md`, a Docker
+  Hub-adapted mirror of the GitHub README with absolute URLs and a
+  Docker-focused quickstart. It does not read the GitHub `README.md`
+  directly, because that file uses HTML align blocks and relative links
+  that Docker Hub's Markdown renderer handles inconsistently. The
+  Docker Hub repository logo is uploaded manually once (see
+  `assets/readme/README.md`); the workflow only syncs the text overview
+  and short description.
 
 ## Notes
 
