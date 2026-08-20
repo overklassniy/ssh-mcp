@@ -110,12 +110,6 @@ supports.
 
 ## Wiki sync workflow fails
 
-### "wiki repository does not exist"
-
-The wiki git backend is not initialized. Create one dummy page in the
-wiki via the GitHub web UI (repo > Wiki > Create the first page). After
-that, the workflow can push.
-
 ### Permission denied on push
 
 The workflow uses `${{ github.token }}` with `permissions: contents:

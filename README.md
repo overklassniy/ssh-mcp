@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/overklassniy/ssh-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/overklassniy/ssh-mcp/ci.yml?style=flat-square&label=CI" alt="CI status"></a>
+  <a href="https://hub.docker.com/r/overklassniy/ssh-mcp"><img src="https://img.shields.io/docker/v/overklassniy/ssh-mcp?style=flat-square&logo=docker&logoColor=white&label=Docker%20Hub" alt="Docker Hub"></a>
   <a href="https://go.dev/doc/go1.26"><img src="https://img.shields.io/badge/Go-1.26+-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go 1.26+"></a>
   <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-server-6E4B9E?style=flat-square" alt="MCP server"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/github/license/overklassniy/ssh-mcp?style=flat-square" alt="License: MIT"></a>
