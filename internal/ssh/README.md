@@ -19,8 +19,11 @@ with stable codes) that the MCP tools surface to agents.
   Also defines `ExecResult`.
 - `manager.go` – `ConnectionManager` for multiple named servers. Supports
   lazy connection, concurrent-attempt deduplication, reconnection with
-  exponential backoff, parallel `ConnectAll`, graceful `Disconnect`, and
-  `Invalidate` to force a reconnect on next use.
+  exponential backoff, parallel `ConnectAll`, graceful `Disconnect`,
+  `Invalidate` to force a reconnect on next use, and `Reload` to
+  atomically swap the configuration. `Reload` closes connections for
+  removed or changed servers, preserves connections for unchanged
+  servers, and always rebuilds command policies from the new config.
 - `auth.go` – `BuildAuthMethods` constructs SSH auth methods in order:
   private key, agent, password, keyboard-interactive. Only configured
   methods are included.
@@ -41,7 +44,8 @@ with stable codes) that the MCP tools surface to agents.
   `SSH_CONNECTION_FAILED`, `COMMAND_TIMEOUT`), `NewToolError`, `AsToolError`,
   and `CodeFromError`.
 - `shell_test.go`, `integration_test.go`,
-  `parallel_integration_test.go` – unit and integration tests.
+  `parallel_integration_test.go`, `reload_test.go` – unit and
+  integration tests, including tests for `ConnectionManager.Reload`.
 
 ## Integration with the project
 

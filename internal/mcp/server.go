@@ -19,12 +19,17 @@ import (
 
 // Server wraps the mcp-go MCP server with the SSH connection manager.
 type Server struct {
-	mcpSrv  *server.MCPServer
-	manager *ssh.ConnectionManager
+	mcpSrv     *server.MCPServer
+	manager    *ssh.ConnectionManager
+	configPath string
 }
 
 // New creates a new MCP server with all tools registered.
-func New(cfg *config.Config) *Server {
+//
+// configPath is the path to the TOML config file, or empty in
+// single-server CLI mode. When non-empty, the config file is watched
+// for changes and reloaded without restarting the server.
+func New(cfg *config.Config, configPath string) *Server {
 	mcpSrv := server.NewMCPServer("ssh-mcp", "1.0.0",
 		server.WithToolCapabilities(true),
 	)
@@ -32,8 +37,9 @@ func New(cfg *config.Config) *Server {
 	manager := ssh.NewConnectionManager(cfg)
 
 	s := &Server{
-		mcpSrv:  mcpSrv,
-		manager: manager,
+		mcpSrv:     mcpSrv,
+		manager:    manager,
+		configPath: configPath,
 	}
 
 	tools.RegisterAll(mcpSrv, manager)
@@ -43,6 +49,10 @@ func New(cfg *config.Config) *Server {
 
 // Run starts the MCP server on stdio and blocks until the server stops
 // or a shutdown signal is received.
+//
+// If a config file path was provided, a background watcher polls it for
+// changes and reloads the configuration into the connection manager
+// without restarting the server.
 func (s *Server) Run() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -56,6 +66,20 @@ func (s *Server) Run() error {
 		s.manager.Disconnect()
 		cancel()
 	}()
+
+	// Start config file watcher for hot-reload (file-based config only).
+	if s.configPath != "" {
+		watcher := config.NewWatcher(s.configPath, 0)
+		reloadCh := watcher.Start()
+		defer watcher.Stop()
+		go func() {
+			for newCfg := range reloadCh {
+				s.manager.Reload(newCfg)
+			}
+		}()
+		slog.Info("config hot-reload enabled", "path", s.configPath,
+			"interval", config.DefaultWatchInterval)
+	}
 
 	// Pre-connect if any server has pre_connect=true
 	if s.manager.Config().PreConnect() {

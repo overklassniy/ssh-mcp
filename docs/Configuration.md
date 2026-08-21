@@ -192,3 +192,48 @@ Resolution fills in missing fields (`HostName`, `User`, `Port`,
 host is not an IP address and does not contain a dot. First-match-wins
 semantics match OpenSSH. `Include` directives are followed recursively
 with cycle detection.
+
+## Hot-reload
+
+When ssh-mcp is started with `--config`, the config file is watched for
+changes and reloaded automatically without restarting the server. This
+applies only to file-based config (the `--config` flag), not to
+single-server CLI mode.
+
+### How it works
+
+- The config file's modification time is polled every 2 seconds.
+- Polling is used instead of filesystem notifications because config
+  files often live on network or cloud-synced filesystems where
+  kernel-level notifications are unreliable.
+- When a change is detected, the file is reloaded and validated. If
+  parsing or validation fails, the error is logged and the previous
+  configuration is kept.
+- The reloaded configuration is applied atomically to the connection
+  manager:
+  - Servers that were removed have their connections closed.
+  - Servers whose config changed in any way have their connections
+    closed so the next operation reconnects with the new settings.
+  - Servers whose config is unchanged keep their existing connections.
+  - Command policies (whitelist/blacklist) are always rebuilt from the
+    new config, so policy changes take effect immediately without
+    reconnection.
+
+### What triggers a reload
+
+Any change to the config file's modification time, including:
+
+- Adding or removing a `[[server]]` entry.
+- Changing any field on an existing server (host, port, auth method,
+  whitelist, timeouts, etc.).
+- Editing the `[defaults]` section.
+
+### Limitations
+
+- The reload only affects file-based config. Single-server mode
+  (`--host` and related CLI flags) does not support hot-reload.
+- If the config file is deleted or becomes unreadable, the watcher logs
+  a warning and retries on the next poll cycle. The last successfully
+  loaded configuration remains active.
+- The polling interval is 2 seconds, so there is a brief delay between
+  saving the file and the change taking effect.

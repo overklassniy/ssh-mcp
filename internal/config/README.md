@@ -23,8 +23,18 @@ of a config file.
   value, command template placeholder), `ResolveSSHConfig` (fill missing
   fields from `~/.ssh/config`), `ExpandHome`, and accessor methods on
   `Config` and `ServerConfig`.
+- `watcher.go` – `Watcher` polls a config file's modification time at a
+  configurable interval (default 2 seconds) and emits a freshly loaded
+  `*Config` on a channel whenever the file changes. Polling is used
+  instead of fsnotify because config files often live on network or
+  cloud-synced filesystems where kernel notifications are unreliable.
+  If a reload fails (parse or validation error), the error is logged and
+  the previous configuration is kept.
 - `loader_test.go` – unit tests for loading, default application, and
   validation.
+- `watcher_test.go` – unit tests for the config watcher: change
+  detection, unchanged-file suppression, parse-error handling, Stop
+  behavior, and missing-file-at-start recovery.
 
 ## Integration with the project
 

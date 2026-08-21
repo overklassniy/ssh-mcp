@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"reflect"
 	"sync"
 	"time"
 
@@ -254,4 +255,88 @@ func (m *ConnectionManager) Policy(name string) *policy.Policy {
 		name = m.config.DefaultServerName()
 	}
 	return m.policies[name]
+}
+
+// Reload atomically replaces the manager's configuration with newCfg.
+//
+// For each server:
+//   - If the server was removed, its connection is closed.
+//   - If the server's config changed in any way, its connection is
+//     closed so the next GetClient reconnects with the new settings.
+//   - If the server is unchanged, its connection is preserved.
+//
+// Policies are always rebuilt from the new config so that whitelist
+// and blacklist changes take effect immediately without reconnection.
+//
+// If a new server's policy fails to compile, the old policy for that
+// server name is retained (if any) so the server remains usable.
+func (m *ConnectionManager) Reload(newCfg *config.Config) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if m.closed {
+		slog.Warn("reload attempted on closed manager, ignoring")
+		return
+	}
+
+	oldCfg := m.config
+
+	// Build new policies, retaining old ones on compilation failure.
+	newPolicies := make(map[string]*policy.Policy, len(newCfg.Servers))
+	for i := range newCfg.Servers {
+		srv := &newCfg.Servers[i]
+		pol, err := policy.New(srv.Whitelist, srv.Blacklist)
+		if err != nil {
+			slog.Error("failed to compile policy on reload",
+				"server", srv.Name, "error", err)
+			if oldPol, ok := m.policies[srv.Name]; ok {
+				newPolicies[srv.Name] = oldPol
+			}
+			continue
+		}
+		newPolicies[srv.Name] = pol
+		if !pol.HasWhitelist() {
+			slog.Warn("no command whitelist configured; all commands will be allowed",
+				"server", srv.Name)
+		}
+		if len(srv.AllowedRemotePaths) == 0 {
+			slog.Warn("no allowed_remote_paths configured; all absolute remote paths will be allowed",
+				"server", srv.Name)
+		}
+	}
+
+	// Index old servers by name for comparison.
+	oldByName := make(map[string]config.ServerConfig, len(oldCfg.Servers))
+	for i := range oldCfg.Servers {
+		oldByName[oldCfg.Servers[i].Name] = oldCfg.Servers[i]
+	}
+
+	// Close connections for removed or changed servers.
+	for name, client := range m.clients {
+		oldSrv, existed := oldByName[name]
+		newSrv := newCfg.GetServer(name)
+
+		var reason string
+		switch {
+		case !existed || newSrv == nil:
+			reason = "server removed"
+		case !reflect.DeepEqual(oldSrv, *newSrv):
+			reason = "server config changed"
+		}
+
+		if reason != "" {
+			if err := client.Close(); err != nil {
+				slog.Warn("error closing connection during reload",
+					"server", name, "error", err)
+			}
+			delete(m.clients, name)
+			slog.Info("invalidated connection on reload",
+				"server", name, "reason", reason)
+		}
+	}
+
+	m.config = newCfg
+	m.policies = newPolicies
+
+	slog.Info("config reloaded", "servers", newCfg.ServerNames())
 }

@@ -36,6 +36,9 @@ restrictions, so the operator controls exactly what the agent can do.
   traversal.
 - **Secrets via env vars** – password, passphrase, and 2FA code are
   passed via environment variables, never on the command line.
+- **Hot-reload** – when started with `--config`, the config file is
+  watched for changes and reloaded without restarting the server. Add,
+  remove, or modify servers and the change takes effect within seconds.
 
 ## Tools at a glance
 

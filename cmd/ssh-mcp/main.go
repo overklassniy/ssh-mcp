@@ -97,13 +97,17 @@ func run(cmd *cobra.Command, args []string) error {
 	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: level})))
 
 	// Load configuration
+	configPath, _ := cmd.Flags().GetString("config")
 	cfg, err := loadConfig(cmd)
 	if err != nil {
 		return fmt.Errorf("load config: %w", err)
 	}
 
-	// Create and run the MCP server
-	srv := mcp.New(cfg)
+	// Create and run the MCP server.
+	// configPath is passed so the server can hot-reload the config file
+	// when it changes. In single-server CLI mode configPath is empty and
+	// no watcher is started.
+	srv := mcp.New(cfg, configPath)
 	return srv.Run()
 }
 
