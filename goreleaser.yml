@@ -28,7 +28,7 @@ builds:
 
 archives:
   - id: default
-    builds:
+    ids:
       - ssh-mcp
     name_template: >-
       {{ .ProjectName }}_{{ .Version }}_
@@ -60,5 +60,5 @@ changelog:
       - "^chore:"
 
 release:
-  draft: true
+  draft: false
   replace_existing_draft: true

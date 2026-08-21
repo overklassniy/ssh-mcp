@@ -1,9 +1,14 @@
-# Dev image workflow: builds and pushes a :dev tagged image on every push
-# to the master branch. No GitHub Release is created.
+# Dev image workflow: builds and pushes :dev and :latest tagged images on
+# every push to the master branch. No GitHub Release is created.
 #
 # Produces:
-#   - Container images tagged :dev on GHCR and Docker Hub (linux/amd64,
-#     linux/arm64).
+#   - Container images tagged :dev and :latest on GHCR and Docker Hub
+#     (linux/amd64, linux/arm64).
+#
+# The :latest tag is pushed here so that docker pull ...:latest always
+# works, even before any release tag is created. When a release tag (v*)
+# is pushed, the release workflow overwrites :latest with the released
+# version.
 #
 # Required secrets for Docker Hub (GHCR uses the automatic GITHUB_TOKEN):
 #   DOCKERHUB_USERNAME - Docker Hub account name.
@@ -59,7 +64,9 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:dev
+            ghcr.io/${{ github.repository }}:latest
             docker.io/${{ vars.DOCKERHUB_IMAGE || 'overklassniy/ssh-mcp' }}:dev
+            docker.io/${{ vars.DOCKERHUB_IMAGE || 'overklassniy/ssh-mcp' }}:latest
           build-args: |
             VERSION=dev-${{ steps.sha.outputs.short }}
           cache-from: type=gha

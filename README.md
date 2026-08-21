@@ -141,6 +141,39 @@ ssh-mcp --host example.com --username deploy --port 22 \
   --private-key ~/.ssh/id_ed25519
 ```
 
+### Paste-in config (go run)
+
+If you have the Go toolchain (Go 1.26+) installed, you can skip the
+binary build entirely. Add this entry to your client's `mcpServers`
+config (e.g. `~/.config/devin/mcp_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "ssh-mcp": {
+      "command": "go",
+      "args": [
+        "run",
+        "github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@latest",
+        "--host", "192.168.1.1",
+        "--port", "22",
+        "--user", "root",
+        "--transport", "exec"
+      ],
+      "env": {
+        "SSH_MCP_PASSWORD": "your-password"
+      }
+    }
+  }
+}
+```
+
+On first run, `go run` fetches and compiles the latest tagged release,
+then starts the stdio MCP server. Subsequent runs use the build cache.
+For private-key auth, replace `SSH_MCP_PASSWORD` with
+`SSH_MCP_PASSPHRASE` and add `--private-key` to `args`. Pin a specific
+version by replacing `@latest` with `@v1.0.0`.
+
 ## Configuration
 
 `ssh-mcp` is configured with a TOML file: a top-level `[defaults]`

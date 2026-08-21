@@ -20,11 +20,14 @@ triggered by changes to DOCKERHUB.md.
   targeting master. Validates Dependabot dependency bumps and feature
   branches before merge.
 - `release.yml` – tag-triggered release pipeline. Runs goreleaser to build
-  cross-platform binaries and create a draft GitHub Release, then builds a
+  cross-platform binaries and create a published GitHub Release, then builds a
   multi-arch Docker image (linux/amd64, linux/arm64) and pushes it to GHCR
   and Docker Hub with semver tags (:version, :major, :major.minor, :latest).
 - `dev-image.yml` – master-branch dev image pipeline. Builds and pushes a
-  multi-arch Docker image tagged :dev to both registries. No GitHub Release
+  multi-arch Docker image tagged :dev and :latest to both registries. The
+  :latest tag ensures `docker pull ...:latest` always works, even before
+  any release tag is created. When a release tag (v*) is pushed, the release
+  workflow overwrites :latest with the released version. No GitHub Release
   is produced. The image embeds a version string of the form
   `dev-<short-sha>`.
 - `wiki-sync.yml` – master-branch documentation sync pipeline. Mirrors the
@@ -44,8 +47,8 @@ triggered by changes to DOCKERHUB.md.
 | Workflow | Trigger | Produces |
 | --- | --- | --- |
 | `ci.yml` | Push to `master` or pull request targeting `master` | Build, vet, and test results |
-| `release.yml` | Push of a `v*` tag (e.g. `v1.0.0`) | Draft GitHub Release + `:version`, `:major`, `:major.minor`, `:latest` images |
-| `dev-image.yml` | Push to `master` branch | `:dev` image only |
+| `release.yml` | Push of a `v*` tag (e.g. `v1.0.0`) | Published GitHub Release + `:version`, `:major`, `:major.minor`, `:latest` images |
+| `dev-image.yml` | Push to `master` branch | `:dev` and `:latest` images |
 | `wiki-sync.yml` | Push to `master` touching `docs/**` | Updated GitHub Wiki mirroring `docs/` |
 | `dockerhub-sync.yml` | Push to `master` touching `DOCKERHUB.md` | Updated Docker Hub overview and short description |
 

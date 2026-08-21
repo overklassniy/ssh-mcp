@@ -3,8 +3,9 @@
 #
 # Triggers on git tags matching v* (e.g. v1.0.0, v1.2.3-rc1).
 # Produces:
-#   - A draft GitHub Release with binaries, archives, and checksums.
-#   - Container images tagged :<version> and :latest on both registries.
+#   - A published GitHub Release with binaries, archives, and checksums.
+#   - Container images tagged :<version>, :<major>, :<major>.<minor>,
+#     and :latest on both registries.
 #
 # Required secrets for Docker Hub (GHCR uses the automatic GITHUB_TOKEN):
 #   DOCKERHUB_USERNAME - Docker Hub account name.
@@ -64,7 +65,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
