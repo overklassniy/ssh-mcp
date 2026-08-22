@@ -1,5 +1,6 @@
 # Dev image workflow: builds and pushes :dev and :latest tagged images on
-# every push to the master branch. No GitHub Release is created.
+# pushes to master that touch Go source, dependencies, or the Dockerfile.
+# No GitHub Release is created.
 #
 # Produces:
 #   - Container images tagged :dev and :latest on GHCR and Docker Hub
@@ -10,6 +11,10 @@
 # is pushed, the release workflow overwrites :latest with the released
 # version.
 #
+# Triggered only by changes that can affect image content; docs-only
+# pushes do not rebuild. Use workflow_dispatch to force a rebuild (e.g.
+# after a base image refresh).
+#
 # Required secrets for Docker Hub (GHCR uses the automatic GITHUB_TOKEN):
 #   DOCKERHUB_USERNAME - Docker Hub account name.
 #   DOCKERHUB_TOKEN    - Docker Hub access token (not the password).
@@ -19,6 +24,14 @@ on:
   push:
     branches:
       - master
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - "Dockerfile"
+      - ".dockerignore"
+      - ".github/workflows/dev-image.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -62,6 +75,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          provenance: mode=max
+          sbom: true
           tags: |
             ghcr.io/${{ github.repository }}:dev
             ghcr.io/${{ github.repository }}:latest

@@ -8,9 +8,19 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "LICENSE"
+      - "assets/**"
   pull_request:
     branches:
       - master
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "LICENSE"
+      - "assets/**"
 
 permissions:
   contents: read
