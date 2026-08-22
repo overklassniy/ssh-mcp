@@ -20,7 +20,12 @@ registers ssh-mcp into a supported AI client's MCP config file.
   `install.Entry` (sensitive values go into the env map, not args), and
   delegates to `internal/install.Install`. Supports `--dry-run`. Also
   supports a `--docker` mode that registers a `docker run` entry instead of
-  a direct executable, with an optional `--docker-image` override.
+  a direct executable, with an optional `--docker-image` override. Also
+  defines the `snippet` subcommand, which prints a ready-to-paste MCP
+  server entry (wrapped in a minimal `mcpServers` object) for copy-paste
+  into a client config without modifying files. Supports `--docker`
+  (docker run entry), `--gorun` (go run entry), and the default
+  local-executable mode. Sensitive values go into the env map, not args.
 
 ## Integration with the project
 

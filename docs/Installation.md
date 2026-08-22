@@ -119,7 +119,7 @@ Claude Code, and MCP for Windows.
 1. Download the `.mcpb` bundle for your platform from the Releases page.
 2. Open the bundle in your client. The client prompts for SSH connection
    details (host, port, username, password or private key, passphrase,
-   2FA toggle) on first install.
+   agent, 2FA toggle) on first install.
 3. Sensitive values (password, passphrase) are passed via environment
    variables, not CLI args.
 
@@ -328,7 +328,7 @@ details as CLI flags. The binary builds a single-server config from the
 flags:
 
 ```sh
-ssh-mcp --host example.com --username deploy --port 22 \
+ssh-mcp --host example.com --user deploy --port 22 \
   --private-key ~/.ssh/id_ed25519
 ```
 

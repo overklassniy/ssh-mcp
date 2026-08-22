@@ -94,13 +94,13 @@ get a raw shell (unsafe, unscoped) or have no SSH access at all.
 tools, each gated by an optional command whitelist/blacklist and path
 restrictions, so the operator controls exactly what the agent can do.
 
-- **Command policy** - `whitelist` and `blacklist` regex patterns gate
+- **Command policy** – `whitelist` and `blacklist` regex patterns gate
   every command before execution. Without a whitelist, all commands are
   allowed and a warning is logged at startup.
-- **Path restrictions** - `allowed_local_paths` and `allowed_remote_paths`
+- **Path restrictions** – `allowed_local_paths` and `allowed_remote_paths`
   confine SFTP transfers to specific directories and reject path
   traversal.
-- **Secrets via env vars** - password, passphrase, and 2FA code are
+- **Secrets via env vars** – password, passphrase, and 2FA code are
   passed via environment variables, never on the command line.
 
 ## Tools at a glance
@@ -116,7 +116,7 @@ restrictions, so the operator controls exactly what the agent can do.
 | `server-status` | Collect system status (CPU, memory, disk, GPU, services) |
 | `list-servers` | List configured servers and their connection status |
 
-See the [Tools docs](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Tools.md) for arguments and examples.
+See the [Tools docs](https://github.com/overklassniy/ssh-mcp/wiki/Tools) for arguments and examples.
 
 ## How it works
 
@@ -132,24 +132,24 @@ See the [Tools docs](https://github.com/overklassniy/ssh-mcp/blob/master/docs/To
    `ssh.ToolError` code and a `Retriable` flag so the agent can decide
    whether to retry.
 
-See the [Architecture docs](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Architecture.md) for the package layout,
+See the [Architecture docs](https://github.com/overklassniy/ssh-mcp/wiki/Architecture) for the package layout,
 dependency graph, and full request data flow.
 
 ## Installation
 
-Three install paths produce the same result - an MCP server entry in
+Three install paths produce the same result – an MCP server entry in
 your client's config file. See the
-[Installation guide](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Installation.md)
+[Installation guide](https://github.com/overklassniy/ssh-mcp/wiki/Installation)
 for the full reference.
 
-- **Local binary** - `make build`, then `ssh-mcp install --client <client>
+- **Local binary** – `make build`, then `ssh-mcp install --client <client>
   --config ./ssh-mcp.toml`. Supported clients: `claude-desktop`,
   `claude-code`, `cursor`, `Devin`, `vscode`, `cline`.
-- **Docker** - `ssh-mcp install --client <client> --docker --config
+- **Docker** – `ssh-mcp install --client <client> --docker --config
   ./ssh-mcp.toml`. Defaults to `ghcr.io/overklassniy/ssh-mcp:latest`;
   override with `--docker-image overklassniy/ssh-mcp:latest` to use this
   Docker Hub mirror.
-- **MCPB one-click bundle** - download the `.mcpb` bundle from the
+- **MCPB one-click bundle** – download the `.mcpb` bundle from the
   [Releases page](https://github.com/overklassniy/ssh-mcp/releases) and
   open it in a client that supports MCPB (Claude Desktop, Claude Code,
   MCP for Windows).
@@ -158,7 +158,7 @@ Single-server mode skips the TOML file and takes connection details as
 CLI flags:
 
 ```sh
-ssh-mcp --host example.com --username deploy --port 22 \
+ssh-mcp --host example.com --user deploy --port 22 \
   --private-key ~/.ssh/id_ed25519
 ```
 
@@ -170,22 +170,27 @@ section and one or more `[[server]]` entries. Each server inherits from
 
 ```toml
 [defaults]
-username = "deploy"
-port = 22
-private_key = "~/.ssh/id_ed25519"
-timeout = "30s"
-transport = "exec"
+command_timeout     = "30s"
+connection_timeout  = "30s"
+sftp_timeout        = "5m"
+keepalive_interval  = "10s"
+keepalive_count_max = 3
+max_output_bytes    = 10485760
+transport           = "exec"
 
 [[server]]
-name = "web"
-host = "web.example.com"
+name     = "web"
+host     = "web.example.com"
+username = "deploy"
+port     = 22
+private_key = "~/.ssh/id_ed25519"
 whitelist = ["^systemctl status .*", "^journalctl .*", "^ls .*"]
 allowed_remote_paths = ["/var/log", "/srv"]
 allowed_local_paths = ["~/downloads"]
 ```
 
 See the
-[Configuration reference](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Configuration.md)
+[Configuration reference](https://github.com/overklassniy/ssh-mcp/wiki/Configuration)
 for auth methods, command policy, path restrictions, keepalive,
 transport modes, and validation rules.
 
@@ -194,10 +199,10 @@ transport modes, and validation rules.
 `ssh-mcp` does not verify remote host keys (`InsecureIgnoreHostKey`).
 Security is enforced through two operator-configured mechanisms:
 
-- **Command policy** - `whitelist`/`blacklist` regex patterns gate every
+- **Command policy** – `whitelist`/`blacklist` regex patterns gate every
   command, including the individual probe commands used by
   `server-status`, so a restrictive whitelist cannot be bypassed.
-- **Path restrictions** - `allowed_local_paths` and `allowed_remote_paths`
+- **Path restrictions** – `allowed_local_paths` and `allowed_remote_paths`
   confine SFTP operations; remote paths must be absolute POSIX paths.
 
 Sensitive values are injected via environment variables:
@@ -210,21 +215,21 @@ Sensitive values are injected via environment variables:
 
 ## Compatibility
 
-- **Clients** - Claude Desktop, Claude Code, Cursor, Devin, VS Code,
+- **Clients** – Claude Desktop, Claude Code, Cursor, Devin, VS Code,
   Cline.
-- **Platforms** - Windows, macOS, Linux (`amd64`, `arm64`).
-- **Runtime** - Go 1.26+ to build, or a prebuilt binary from the
+- **Platforms** – Windows, macOS, Linux (`amd64`, `arm64`).
+- **Runtime** – Go 1.26+ to build, or a prebuilt binary from the
   Releases page.
-- **Image** - distroless static, multi-arch (`linux/amd64`,
+- **Image** – distroless static, multi-arch (`linux/amd64`,
   `linux/arm64`), typically 15-18 MB.
 
 ## Documentation
 
-- [Installation](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Installation.md) - local binary, Docker, and MCPB one-click bundles.
-- [Configuration](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Configuration.md) - full TOML reference.
-- [Tools](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Tools.md) - the eight MCP tools, arguments, and examples.
-- [Architecture](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Architecture.md) - package layout and request data flow.
-- [Troubleshooting](https://github.com/overklassniy/ssh-mcp/blob/master/docs/Troubleshooting.md) - common issues and fixes.
+- [Installation](https://github.com/overklassniy/ssh-mcp/wiki/Installation) – local binary, Docker, and MCPB one-click bundles.
+- [Configuration](https://github.com/overklassniy/ssh-mcp/wiki/Configuration) – full TOML reference.
+- [Tools](https://github.com/overklassniy/ssh-mcp/wiki/Tools) – the eight MCP tools, arguments, and examples.
+- [Architecture](https://github.com/overklassniy/ssh-mcp/wiki/Architecture) – package layout and request data flow.
+- [Troubleshooting](https://github.com/overklassniy/ssh-mcp/wiki/Troubleshooting) – common issues and fixes.
 
 The same pages are mirrored to the repository's
 [GitHub Wiki](https://github.com/overklassniy/ssh-mcp/wiki).

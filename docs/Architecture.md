@@ -31,6 +31,7 @@ entry point is the `ssh-mcp` binary built from `cmd/ssh-mcp`.
 cmd/ssh-mcp
 ├── internal/config
 │   └── internal/sshconfig
+├── internal/sshconfig
 ├── internal/mcp
 │   ├── internal/config
 │   ├── internal/ssh
@@ -47,6 +48,8 @@ cmd/ssh-mcp
 Key properties:
 
 - `cmd/ssh-mcp` is the only package that imports `install` and `mcp`.
+- `cmd/ssh-mcp` also imports `sshconfig` directly for single-server
+  alias resolution.
 - `mcp` depends on `config`, `ssh`, and `mcp/tools`.
 - `ssh` depends on `config`, `policy`, and `paths`.
 - `status` depends on `policy` (each status probe is policy-validated

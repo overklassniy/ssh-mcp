@@ -18,30 +18,38 @@ path in the client entry it writes.
 
 ## Full example
 
+Only the fields listed in the `[defaults]` table below are inheritable.
+`username`, `port`, `password`, `private_key`, `passphrase`, `agent`,
+`try_keyboard`, and `command_template` are NOT inheritable and must be
+set on each `[[server]]` entry directly.
+
 ```toml
 [defaults]
-username = "deploy"
-port = 22
-private_key = "~/.ssh/id_ed25519"
-timeout = "30s"
-keepalive_interval = "30s"
+command_timeout     = "30s"
+connection_timeout  = "30s"
+sftp_timeout        = "5m"
+shell_ready_timeout = "10s"
+keepalive_interval  = "10s"
 keepalive_count_max = 3
-max_output_bytes = 1048576
-transport = "exec"
+max_output_bytes    = 10485760
+transport           = "exec"
 
 [[server]]
-name = "web"
-host = "web.example.com"
+name     = "web"
+host     = "web.example.com"
+username = "deploy"
+port     = 22
+private_key = "~/.ssh/id_ed25519"
 whitelist = ["^systemctl status .*", "^journalctl .*", "^ls .*"]
 allowed_remote_paths = ["/var/log", "/srv"]
 allowed_local_paths = ["~/downloads"]
 
 [[server]]
-name = "db"
-host = "db.example.com"
-username = "postgres"        # overrides defaults.username
-port = 2222                  # overrides defaults.port
-password = "..."             # or use SSH_MCP_PASSWORD
+name     = "db"
+host     = "db.example.com"
+username = "postgres"
+port     = 2222
+password = "..."             # set directly; env var fallback does not apply in TOML mode
 transport = "shell"
 pty = true
 pre_connect = true
@@ -50,56 +58,56 @@ pre_connect = true
 ## `[defaults]`
 
 Optional. Values set here apply to every server that does not override
-them.
+them. Only the fields listed below are inheritable; `username`, `port`,
+`password`, `private_key`, `passphrase`, `agent`, `try_keyboard`, and
+`command_template` are NOT inheritable and must be set on each
+`[[server]]` entry directly.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `username` | string | – | SSH username |
-| `port` | int | 22 | SSH port (1-65535) |
-| `password` | string | – | Password auth (or `SSH_MCP_PASSWORD`) |
-| `private_key` | string | – | Path to a private key file |
-| `passphrase` | string | – | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
-| `agent` | bool | false | Use the SSH agent (`SSH_AUTH_SOCK`) |
-| `try_keyboard` | bool | false | Try keyboard-interactive auth (2FA) |
-| `timeout` | duration | `30s` | Per-command timeout |
-| `keepalive_interval` | duration | `30s` | Keepalive request interval |
+| `command_timeout` | duration | `30s` | Per-command timeout |
+| `connection_timeout` | duration | `30s` | SSH connection timeout |
+| `sftp_timeout` | duration | `5m` | SFTP operation timeout |
+| `shell_ready_timeout` | duration | `10s` | Shell ready handshake timeout (shell transport) |
+| `keepalive_interval` | duration | `10s` | Keepalive request interval |
 | `keepalive_count_max` | int | 3 | Failures before closing the connection |
-| `max_output_bytes` | int | 1048576 | Cap on captured stdout/stderr |
+| `max_output_bytes` | int | 10485760 | Cap on captured stdout/stderr |
 | `transport` | string | `exec` | `exec` or `shell` |
 | `pty` | bool | false | Allocate a PTY for commands |
-| `command_template` | string | – | Wrap commands (must contain `<command>` or `<quotedCommand>`) |
 
 ## `[[server]]`
 
 One entry per remote server. Required fields: `name`, `host`,
-`username`, `port` (or inherited from defaults), and at least one auth
+`username`, `port` (defaults to 22 if unset), and at least one auth
 method.
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
 | `name` | string | required | Unique server name used by `connectionName` |
 | `host` | string | required | Hostname or IP address |
-| `username` | string | required | SSH username (inheritable) |
-| `port` | int | 22 | SSH port (inheritable) |
-| `password` | string | – | Password auth (or `SSH_MCP_PASSWORD`) |
+| `username` | string | required | SSH username |
+| `port` | int | 22 | SSH port (1-65535) |
+| `password` | string | – | Password auth (or `SSH_MCP_PASSWORD` in CLI mode) |
 | `private_key` | string | – | Path to a private key file |
-| `passphrase` | string | – | Private key passphrase (or `SSH_MCP_PASSPHRASE`) |
-| `agent` | bool | false | Use the SSH agent |
+| `passphrase` | string | – | Private key passphrase (or `SSH_MCP_PASSPHRASE` in CLI mode) |
+| `agent` | string | – | Use the SSH agent — `"env"` (uses `$SSH_AUTH_SOCK`) or explicit socket path |
 | `try_keyboard` | bool | false | Try keyboard-interactive auth (2FA) |
-| `timeout` | duration | `30s` | Per-command timeout |
-| `keepalive_interval` | duration | `30s` | Keepalive interval |
-| `keepalive_count_max` | int | 3 | Failures before reconnect |
-| `max_output_bytes` | int | 1048576 | Output cap |
-| `transport` | string | `exec` | `exec` or `shell` |
-| `pty` | bool | false | Allocate a PTY |
-| `command_template` | string | – | Wrap commands |
+| `command_timeout` | duration | `30s` | Per-command timeout (inheritable) |
+| `connection_timeout` | duration | `30s` | SSH connection timeout (inheritable) |
+| `sftp_timeout` | duration | `5m` | SFTP operation timeout (inheritable) |
+| `shell_ready_timeout` | duration | `10s` | Shell ready handshake timeout (inheritable) |
+| `keepalive_interval` | duration | `10s` | Keepalive interval (inheritable) |
+| `keepalive_count_max` | int | 3 | Failures before reconnect (inheritable) |
+| `max_output_bytes` | int | 10485760 | Output cap (inheritable) |
+| `transport` | string | `exec` | `exec` or `shell` (inheritable) |
+| `pty` | bool | false | Allocate a PTY (inheritable) |
+| `command_template` | string | – | Wrap commands (must contain `<command>` or `<quotedCommand>`) |
 | `pre_connect` | bool | false | Connect at startup instead of lazily |
 | `whitelist` | []string | – | Regex patterns a command must match |
 | `blacklist` | []string | – | Regex patterns a command must not match |
 | `allowed_local_paths` | []string | – | Local roots for SFTP uploads/downloads |
 | `allowed_remote_paths` | []string | – | Remote roots for SFTP operations |
-| `proxy_url` | string | – | SOCKS5 or HTTP CONNECT proxy URL |
-| `ssh_config` | string | – | Path to an OpenSSH config for alias resolution |
+| `proxy` | string | – | SOCKS5, HTTP CONNECT, or HTTPS CONNECT proxy URL |
 
 ## Authentication
 
@@ -115,6 +123,12 @@ the config file:
 | `SSH_MCP_PASSWORD` | Password auth (fallback when `password` is empty) |
 | `SSH_MCP_PASSPHRASE` | Private key passphrase (fallback when `passphrase` is empty) |
 | `SSH_MCP_2FA_CODE` | 2FA code for keyboard-interactive auth |
+
+The `SSH_MCP_PASSWORD` and `SSH_MCP_PASSPHRASE` fallbacks apply only in
+single-server CLI mode (including MCPB, `install`, and `snippet`
+single-server entries). In TOML config mode, set `password` and
+`passphrase` directly in the config file — the env var fallback is not
+applied. `SSH_MCP_2FA_CODE` is read at auth time and works in all modes.
 
 This is how MCPB and other launchers inject sensitive values without
 exposing them on the command line.
@@ -169,7 +183,7 @@ At startup, each server is validated:
 
 - `name` must be unique across all servers.
 - `host` is required.
-- `username` is required (directly or via defaults).
+- `username` is required (must be set directly on each server).
 - `port` must be in 1-65535.
 - At least one auth method must be configured.
 - `transport` must be `exec` or `shell`.

@@ -27,7 +27,7 @@ The SSH client could not connect to the remote server.
 - Verify the auth method. If using a private key, confirm the path is
   correct and the key is readable. If using an agent, confirm
   `SSH_AUTH_SOCK` is set and the key is loaded (`ssh-add -l`).
-- If connecting through a proxy, verify `proxy_url` is reachable and the
+- If connecting through a proxy, verify `proxy` is reachable and the
   proxy type (SOCKS5 or HTTP CONNECT) is correct.
 - Test the same connection with the `ssh` CLI to isolate whether the
   issue is ssh-mcp or the server itself.

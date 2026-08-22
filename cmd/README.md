@@ -12,8 +12,9 @@ subdirectory under `cmd/`, so the binary name matches the subdirectory name.
 
 - `ssh-mcp/` – the `ssh-mcp` binary entry point. Parses CLI flags (or a TOML
   config file), loads configuration, and starts the MCP stdio server; also
-  provides the `install` subcommand that registers ssh-mcp in a supported AI
-  client's MCP config.
+  provides the `install` and `snippet` subcommands. `install` registers
+  ssh-mcp in a supported AI client's MCP config; `snippet` prints a
+  ready-to-paste config entry without modifying files.
 
 ## Integration with the project
 

@@ -53,7 +53,7 @@ restrictions, so the operator controls exactly what the agent can do.
 | `server-status` | Collect system status (CPU, memory, disk, GPU, services) |
 | `list-servers` | List configured servers and their connection status |
 
-See [Tools](docs/Tools.md) for arguments and examples.
+See [Tools](https://github.com/overklassniy/ssh-mcp/wiki/Tools) for arguments and examples.
 
 ## How it works
 
@@ -69,7 +69,7 @@ See [Tools](docs/Tools.md) for arguments and examples.
    `ssh.ToolError` code and a `Retriable` flag so the agent can decide
    whether to retry.
 
-See [Architecture](docs/Architecture.md) for the package layout,
+See [Architecture](https://github.com/overklassniy/ssh-mcp/wiki/Architecture) for the package layout,
 dependency graph, and full request data flow.
 
 ## Quickstart
@@ -106,7 +106,7 @@ You should see your server with a `connected` or `disconnected` status.
 ## Installation
 
 Three install paths produce the same result – an MCP server entry in
-your client's config file. See [Installation](docs/Installation.md) for
+your client's config file. See [Installation](https://github.com/overklassniy/ssh-mcp/wiki/Installation) for
 the full guide.
 
 - **Local binary** – `make build`, then `ssh-mcp install --client <client>
@@ -130,14 +130,14 @@ the full guide.
   `go run github.com/overklassniy/ssh-mcp/cmd/ssh-mcp@latest` (the
   Go-native equivalent of `npx -y <package>`, requires the Go
   toolchain). Secrets stay in the `env` block, never in `args`. See
-  [Installation](docs/Installation.md#option-d-paste-in-config) for
+  [Installation](https://github.com/overklassniy/ssh-mcp/wiki/Installation#option-d-paste-in-config) for
   ready-to-paste JSON blocks.
 
 Single-server mode skips the TOML file and takes connection details as
 CLI flags:
 
 ```sh
-ssh-mcp --host example.com --username deploy --port 22 \
+ssh-mcp --host example.com --user deploy --port 22 \
   --private-key ~/.ssh/id_ed25519
 ```
 
@@ -145,7 +145,7 @@ ssh-mcp --host example.com --username deploy --port 22 \
 
 If you have the Go toolchain (Go 1.26+) installed, you can skip the
 binary build entirely. Add this entry to your client's `mcpServers`
-config (e.g. `~/.config/devin/mcp_config.json`):
+config (e.g. `~/.codeium/Devin/mcp_config.json`):
 
 ```json
 {
@@ -182,21 +182,26 @@ section and one or more `[[server]]` entries. Each server inherits from
 
 ```toml
 [defaults]
-username = "deploy"
-port = 22
-private_key = "~/.ssh/id_ed25519"
-timeout = "30s"
-transport = "exec"
+command_timeout     = "30s"
+connection_timeout  = "30s"
+sftp_timeout        = "5m"
+keepalive_interval  = "10s"
+keepalive_count_max = 3
+max_output_bytes    = 10485760
+transport           = "exec"
 
 [[server]]
-name = "web"
-host = "web.example.com"
+name     = "web"
+host     = "web.example.com"
+username = "deploy"
+port     = 22
+private_key = "~/.ssh/id_ed25519"
 whitelist = ["^systemctl status .*", "^journalctl .*", "^ls .*"]
 allowed_remote_paths = ["/var/log", "/srv"]
 allowed_local_paths = ["~/downloads"]
 ```
 
-See [Configuration](docs/Configuration.md) for the full reference:
+See [Configuration](https://github.com/overklassniy/ssh-mcp/wiki/Configuration) for the full reference:
 auth methods, command policy, path restrictions, keepalive, transport
 modes, and validation rules.
 
@@ -229,16 +234,21 @@ Sensitive values are injected via environment variables:
 
 ## Documentation
 
-- [Installation](docs/Installation.md) – local binary, Docker, and MCPB
+- [Installation](https://github.com/overklassniy/ssh-mcp/wiki/Installation) – local binary, Docker, and MCPB
   one-click bundles.
-- [Configuration](docs/Configuration.md) – full TOML reference.
-- [Tools](docs/Tools.md) – the eight MCP tools, arguments, and examples.
-- [Architecture](docs/Architecture.md) – package layout and request
+- [Configuration](https://github.com/overklassniy/ssh-mcp/wiki/Configuration) – full TOML reference.
+- [Tools](https://github.com/overklassniy/ssh-mcp/wiki/Tools) – the eight MCP tools, arguments, and examples.
+- [Architecture](https://github.com/overklassniy/ssh-mcp/wiki/Architecture) – package layout and request
   data flow.
-- [Troubleshooting](docs/Troubleshooting.md) – common issues and fixes.
+- [Troubleshooting](https://github.com/overklassniy/ssh-mcp/wiki/Troubleshooting) – common issues and fixes.
 
 The same pages are mirrored to the repository's GitHub Wiki by the
 `wiki-sync` workflow; edit them in `docs/`, not in the wiki UI.
+
+## Acknowledgements
+
+This project was inspired by
+[classfang/ssh-mcp-server](https://github.com/classfang/ssh-mcp-server).
 
 ## License
 
